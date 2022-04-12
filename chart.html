@@ -8,7 +8,17 @@
     <title>Stock Portfolio Analyzer</title>
 </head>
 <body>
-    
+    <nav class="container column-12 px-4 flex max-w-full justify-between bg-slate-800 h-20 items-center font-bold text-white text-2xl">
+        <h1 class="relative w-fit pl-2">Stock Portfolio Analyzer</h1>
+        <div class="container flex w-fit pr-2">
+            <a id="landPortfolio" class="relative pr-2 hover:underline" href="portfolio.html">Portfolio</a>
+            <p class="relative pb-1"> | </p>
+            <a id="landChart" class="relative pl-2 hover:underline" href="index.html">Main</a>
+        </div>
+    </nav>
+    <canvas id="myChart" width="400" height="400"></canvas>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="assets/scripts/chart.js"></script>
 </html>
