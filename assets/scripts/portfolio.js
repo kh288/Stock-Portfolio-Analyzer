@@ -1,12 +1,16 @@
 const portfolioNameDialogEl = $("#enter-portfolio-name-dialog");
 const portfolioNameDialogInputEl = $("#enter-portfolio-name-dialog-input");
+const portfolioPositionDialogEl = $("#enter-position-dialog");
+const portfolioPositionDialogTickerInputEl = $("#enter-position-dialog-ticker-input");
+const portfolioPositionDialogSizeInputEl = $("#enter-position-dialog-size-input");
 const portfolioNameEl = $("#portfolio-name");
 const portfolioEl = $("#portfolio");
 const portfolioListEl = $("#portfolio-list");
 const addPositionEl = $("#button-add-position");
 const saveButtonEl = $("#button-save-portfolio");
 const deleteButtonEl = $("#button-delete-portfolio");
-var portNameEl=$('#nameInput')
+const portNameEditButtonEl=$('#nameInput');
+const portfolioAddPositionButtonEl=$('#button-add-position');
 
 var portfolio = {
     name: "Mega Stonks",
@@ -24,7 +28,7 @@ portfolioListEl.on("click", ".delete-position", function()
 
 addPositionEl.on("click", function()
 {
-    var newPosition = getNewPosition();
+    /*var newPosition = getNewPosition();
     portfolio.positions.push(newPosition);
     console.log(portfolio);
 
@@ -47,7 +51,8 @@ addPositionEl.on("click", function()
     positionPriceEl.appendTo(positionEl);
     deleteButtonEl.appendTo(positionEl);
 
-    positionEl.appendTo(portfolioListEl);
+    positionEl.appendTo(portfolioListEl);*/
+    portfolioPositionDialogEl[0].showModal();
 });
 
 saveButtonEl.on("click", function()
@@ -69,23 +74,53 @@ portfolioNameDialogEl.on("close", function()
     refreshPortfolioName();
 });
 
-function getNewPosition() // TODO: Query user for input
+portfolioPositionDialogEl.on("close", function()
+{
+    if(portfolioPositionDialogEl[0].returnValue === "ok")
+    {
+        var newPosition = getNewPosition(portfolioPositionDialogTickerInputEl.val(), portfolioPositionDialogSizeInputEl.val());
+        addPositionToList(newPosition);
+    }
+    //refreshPortfolioName();
+});
+
+function getNewPosition(ticker, size) // TODO: Query user for input
 {
     return {
-        ticker: "AAPL",
-        size: (portfolio.positions.length + 1) * 10
+        ticker: ticker,
+        size: size
     };
 }
 
-//button function to save name from textarea box
-$('#inputBtn').on('click', portName)
-function portName(event){
-    //event.preventDefault();
-    //console.log('sent portfolio name');
-    //portfolio.name = portNameEl.val();
+function addPositionToList(position)
+{
+    const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink'>");
+
+    const tickerEl = $("<h3>");
+    tickerEl.text(position.ticker);
+    const amountEl = $("<p>");
+    amountEl.text("Amount: " + position.size);
+    const priceEl = $("<p>");
+    priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
+    const positionPriceEl = $("<p>");
+    positionPriceEl.text("Position Value: $8,375.00 (-$217.00)");
+    const deleteButtonEl = $("<button class='delete-position' type='button'>");
+    deleteButtonEl.text("Delete Position");
     
+    tickerEl.appendTo(positionEl);
+    amountEl.appendTo(positionEl);
+    priceEl.appendTo(positionEl);
+    positionPriceEl.appendTo(positionEl);
+    deleteButtonEl.appendTo(positionEl);
+
+    positionEl.appendTo(portfolioListEl);
+}
+
+//button function to save name from textarea box
+portNameEditButtonEl.on('click', function()
+{
     portfolioNameDialogEl[0].showModal();
-};
+});
 
 function refreshPortfolioName()
 {
