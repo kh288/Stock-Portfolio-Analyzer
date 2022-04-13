@@ -1,5 +1,6 @@
 const portfolioNameDialogEl = $("#enter-portfolio-name-dialog");
 const portfolioNameDialogInputEl = $("#enter-portfolio-name-dialog-input");
+const portfolioNameEl = $("#portfolio-name");
 const portfolioEl = $("#portfolio");
 const portfolioListEl = $("#portfolio-list");
 const addPositionEl = $("#button-add-position");
@@ -63,7 +64,8 @@ portfolioNameDialogEl.on("close", function()
 {
     if(portfolioNameDialogEl[0].returnValue === "ok")
     {
-        alert(portfolioNameDialogInputEl.val());
+        //alert(portfolioNameDialogInputEl.val());
+        portfolioNameEl.text(portfolioNameDialogInputEl.val());
     }
 });
 
