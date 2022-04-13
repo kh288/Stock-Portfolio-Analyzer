@@ -1,14 +1,22 @@
+const portfolioNameDialogEl = $("#enter-portfolio-name-dialog");
+const portfolioNameDialogInputEl = $("#enter-portfolio-name-dialog-input");
+const portfolioPositionDialogEl = $("#enter-position-dialog");
+const portfolioPositionDialogTickerInputEl = $("#enter-position-dialog-ticker-input");
+const portfolioPositionDialogSizeInputEl = $("#enter-position-dialog-size-input");
+const portfolioNameEl = $("#portfolio-name");
 const portfolioEl = $("#portfolio");
 const portfolioListEl = $("#portfolio-list");
 const addPositionEl = $("#button-add-position");
 const saveButtonEl = $("#button-save-portfolio");
 const deleteButtonEl = $("#button-delete-portfolio");
-var portNameEl=$('#nameInput')
-
-var portfolio = {
+const portNameEditButtonEl=$('#inputBtn');
+const portfolioAddPositionButtonEl=$('#button-add-position');
+const defaultPortfolio = {
     name: "Mega Stonks",
     positions : []
 };
+
+var portfolio;
 
 portfolioListEl.on("click", ".delete-position", function()
 {
@@ -21,16 +29,57 @@ portfolioListEl.on("click", ".delete-position", function()
 
 addPositionEl.on("click", function()
 {
-    var newPosition = getNewPosition();
-    portfolio.positions.push(newPosition);
-    console.log(portfolio);
+    portfolioPositionDialogEl[0].showModal();
+});
 
+saveButtonEl.on("click", function()
+{
+    localStorage.setItem("portfolio", JSON.stringify(portfolio));
+    console.log(portfolio);
+});
+
+deleteButtonEl.on("click", function()
+{
+    localStorage.removeItem("portfolio");
+});
+
+portfolioNameDialogEl.on("close", function()
+{
+    if(portfolioNameDialogEl[0].returnValue === "ok")
+    {
+        portfolio.name = portfolioNameDialogInputEl.val();
+    }
+    refreshPortfolioName();
+});
+
+portfolioPositionDialogEl.on("close", function()
+{
+    if(portfolioPositionDialogEl[0].returnValue === "ok")
+    {
+        var newPosition = getNewPosition(portfolioPositionDialogTickerInputEl.val(), portfolioPositionDialogSizeInputEl.val());
+        portfolio.positions.push(newPosition);
+        addPositionToList(newPosition);
+    }
+    portfolioPositionDialogTickerInputEl.val("");
+    portfolioPositionDialogSizeInputEl.val("");
+});
+
+function getNewPosition(ticker, size) // TODO: Query user for input
+{
+    return {
+        ticker: ticker,
+        size: size
+    };
+}
+
+function addPositionToList(position)
+{
     const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink'>");
 
     const tickerEl = $("<h3>");
-    tickerEl.text(newPosition.ticker);
+    tickerEl.text(position.ticker);
     const amountEl = $("<p>");
-    amountEl.text("Amount: " + newPosition.size);
+    amountEl.text("Amount: " + position.size);
     const priceEl = $("<p>");
     priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
     const positionPriceEl = $("<p>");
@@ -45,32 +94,33 @@ addPositionEl.on("click", function()
     deleteButtonEl.appendTo(positionEl);
 
     positionEl.appendTo(portfolioListEl);
-});
-
-saveButtonEl.on("click", function()
-{
-    localStorage.setItem("portfolio-name", "Mega Stonks");
-});
-
-deleteButtonEl.on("click", function()
-{
-    localStorage.removeItem("portfolio-name");
-    alert("Delete button pressed!");
-
-});
-
-function getNewPosition() // TODO: Query user for input
-{
-    return {
-        ticker: "AAPL",
-        size: (portfolio.positions.length + 1) * 10
-    };
 }
 
 //button function to save name from textarea box
-$('#inputBtn').on('click', portName)
-function portName(event){
-    event.preventDefault();
-    console.log('sent portfolio name')
-    portfolio.name = portNameEl.val()    
-};
+portNameEditButtonEl.on('click', function()
+{
+    portfolioNameDialogEl[0].showModal();
+});
+
+function refreshPortfolioName()
+{
+    portfolioNameEl.text(portfolio.name);
+    portfolioNameDialogInputEl.val(portfolio.name);
+}
+
+function loadPortfolio()
+{
+    portfolio = JSON.parse(localStorage.getItem("portfolio")) || defaultPortfolio;
+    for(var position of portfolio.positions)
+    {
+        addPositionToList(position);
+    }
+}
+
+function init()
+{
+    loadPortfolio();
+    refreshPortfolioName();
+}
+
+init();
