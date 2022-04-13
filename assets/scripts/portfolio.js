@@ -3,6 +3,7 @@ const portfolioListEl = $("#portfolio-list");
 const addPositionEl = $("#button-add-position");
 const saveButtonEl = $("#button-save-portfolio");
 const deleteButtonEl = $("#button-delete-portfolio");
+var portNameEl=$('#nameInput')
 
 var portfolio = {
     name: "Mega Stonks",
@@ -24,7 +25,7 @@ addPositionEl.on("click", function()
     portfolio.positions.push(newPosition);
     console.log(portfolio);
 
-    const positionEl = $("<div>");
+    const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink'>");
 
     const tickerEl = $("<h3>");
     tickerEl.text(newPosition.ticker);
@@ -54,6 +55,8 @@ saveButtonEl.on("click", function()
 deleteButtonEl.on("click", function()
 {
     localStorage.removeItem("portfolio-name");
+    alert("Delete button pressed!");
+
 });
 
 function getNewPosition() // TODO: Query user for input
@@ -63,3 +66,11 @@ function getNewPosition() // TODO: Query user for input
         size: (portfolio.positions.length + 1) * 10
     };
 }
+
+//button function to save name from textarea box
+$('#inputBtn').on('click', portName)
+function portName(event){
+    event.preventDefault();
+    console.log('sent portfolio name')
+    portfolio.name = portNameEl.val()    
+};
