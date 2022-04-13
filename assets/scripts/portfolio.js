@@ -64,9 +64,9 @@ portfolioNameDialogEl.on("close", function()
 {
     if(portfolioNameDialogEl[0].returnValue === "ok")
     {
-        //alert(portfolioNameDialogInputEl.val());
-        portfolioNameEl.text(portfolioNameDialogInputEl.val());
+        portfolio.name = portfolioNameDialogInputEl.val();
     }
+    refreshPortfolioName();
 });
 
 function getNewPosition() // TODO: Query user for input
@@ -87,9 +87,15 @@ function portName(event){
     portfolioNameDialogEl[0].showModal();
 };
 
-function init()
+function refreshPortfolioName()
 {
     portfolioNameEl.text(portfolio.name);
+    portfolioNameDialogInputEl.val(portfolio.name);
+}
+
+function init()
+{
+    refreshPortfolioName();
 }
 
 init();
