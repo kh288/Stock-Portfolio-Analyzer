@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://unpkg.com/css.gg/icons/all.css' rel='stylesheet'>
     <title>Stock Portfolio Analyzer</title>
 </head>
 <body>
@@ -27,10 +28,20 @@
                 </div>
             </form>
         </dialog>
+        <dialog id="enter-position-dialog">
+            <p>Enter a new position</p>
+            <form method="dialog">
+                <input id="enter-position-dialog-input" name="position"></input>
+                <div>
+                    <button id="enter-position-dialog-cancel" value="cancel">Cancel</button>
+                    <button id="enter-position-dialog-submit" value="ok">OK</button>
+                </div>
+            </form>
+        </dialog>
         <div class="container max-w-full flex justify-center row mt-5">
             <h2 id="portfolio-name" class="border p-1"></h2>
             <!--<textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>-->
-            <button id="inputBtn" class="border bg-slate-800 text-white h-10 p-1">Save portfolio name</button>
+            <button id="inputBtn" class="border bg-slate-800 text-white h-10 p-1"><i class="gg-edit-markup"></i></button>
         </div>
         <section id="portfolio" class="container bg-slate-500 text-white max-w-full mt-5 mb-5">
             <!-- Todo: insert dynamically based on portfolio content -->

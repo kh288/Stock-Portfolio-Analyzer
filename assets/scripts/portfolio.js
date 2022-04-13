@@ -86,3 +86,10 @@ function portName(event){
     
     portfolioNameDialogEl[0].showModal();
 };
+
+function init()
+{
+    portfolioNameEl.text(portfolio.name);
+}
+
+init();
