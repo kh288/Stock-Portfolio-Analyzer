@@ -11,6 +11,10 @@ var portfolio = {
 
 portfolioListEl.on("click", ".delete-position", function()
 {
+    var deletedPositionIndex = $(this).parent().index();
+    portfolio.positions.splice(deletedPositionIndex, 1);
+    console.log(portfolio);
+
     $(this).parent().remove();
 });
 
@@ -56,6 +60,6 @@ function getNewPosition() // TODO: Query user for input
 {
     return {
         ticker: "AAPL",
-        size: 50
+        size: (portfolio.positions.length + 1) * 10
     };
 }
