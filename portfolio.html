@@ -17,6 +17,16 @@
         </div>
     </nav>
     <main>
+        <dialog id="enter-portfolio-name-dialog">
+            <p>Enter a new name for your portfolio</p>
+            <form method="dialog">
+                <input id="enter-portfolio-name-dialog-input" name="portfolio-name"></input>
+                <div>
+                    <button id="enter-portfolio-name-dialog-cancel" value="cancel">Cancel</button>
+                    <button id="enter-portfolio-name-dialog-submit" value="ok">OK</button>
+                </div>
+            </form>
+        </dialog>
         <div class="container max-w-full flex justify-center row mt-5">
                 <p class="border p-1">Portfolio Name: </p>
                 <textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>

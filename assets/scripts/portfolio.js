@@ -1,3 +1,5 @@
+const portfolioNameDialogEl = $("#enter-portfolio-name-dialog");
+const portfolioNameDialogInputEl = $("#enter-portfolio-name-dialog-input");
 const portfolioEl = $("#portfolio");
 const portfolioListEl = $("#portfolio-list");
 const addPositionEl = $("#button-add-position");
@@ -55,8 +57,14 @@ saveButtonEl.on("click", function()
 deleteButtonEl.on("click", function()
 {
     localStorage.removeItem("portfolio-name");
-    alert("Delete button pressed!");
+});
 
+portfolioNameDialogEl.on("close", function()
+{
+    if(portfolioNameDialogEl[0].returnValue === "ok")
+    {
+        alert(portfolioNameDialogInputEl.val());
+    }
 });
 
 function getNewPosition() // TODO: Query user for input
@@ -70,7 +78,9 @@ function getNewPosition() // TODO: Query user for input
 //button function to save name from textarea box
 $('#inputBtn').on('click', portName)
 function portName(event){
-    event.preventDefault();
-    console.log('sent portfolio name')
-    portfolio.name = portNameEl.val()    
+    //event.preventDefault();
+    //console.log('sent portfolio name');
+    //portfolio.name = portNameEl.val();
+    
+    portfolioNameDialogEl[0].showModal();
 };
