@@ -14,13 +14,12 @@ deleteButtonEl.on("click", function()
 });
 
 var portNameEl=$('#nameInput')
-var nameText = '';
 //button function to save name from textarea box
 $('#inputBtn').on('click', portName)
 function portName(event){
     event.preventDefault();
-    console.log('p')
-    nameText = portNameEl.val()
+    console.log('sent portfolio name')
+    portfolio.name = portNameEl.val()
     //instead of set item we can just send var nameText to array object
-    localStorage.setItem('name',nameText)
+    
 }
