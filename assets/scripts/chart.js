@@ -5,41 +5,39 @@ var time = "5min"; // for intra-day intervals
 var apiLink = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+ticker+"&interval="+time+"&apikey="+apiKey;
 var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+ticker+"&apikey="+apiKey;
 
-const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: ticker,
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
+// var luxTest = luxon
+// console.log(luxon.DateTime)
+
+const startingdate = luxon.DateTime.fromRFC2822('01 Aug 2021 00:00 GMT')
+const startingdate2 = luxon.DateTime.fromRFC2822('02 Aug 2021 00:00 GMT')
+
+const data =  {
+    datasets: [{
+        data: [
+        {
+            x: startingdate.valueOf(),
+            o: 1,
+            h: 1.50,
+            l: 0.75,
+            c: 1.25
+        },
+        {
+            x: startingdate2.valueOf(),
+            o: 1.25,
+            h: 2,
+            l: 1.00,
+            c: 1.50
         }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
+        // label: ticker,
+    }]
+};
+
+const config = {
+    type: 'candlestick',
+    data
+};
+
+const myChart = new Chart(document.getElementById('myChart'),config);
 
 var completeData;
 
