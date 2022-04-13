@@ -11,6 +11,9 @@ var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&s
 const startingdate = luxon.DateTime.fromRFC2822('01 Aug 2021 00:00 GMT')
 const startingdate2 = luxon.DateTime.fromRFC2822('02 Aug 2021 00:00 GMT')
 
+console.log(startingdate)
+
+
 const data =  {
     datasets: [{
         data: [
