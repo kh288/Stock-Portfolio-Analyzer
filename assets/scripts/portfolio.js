@@ -4,20 +4,28 @@ const addPositionEl = $("#button-add-position");
 const saveButtonEl = $("#button-save-portfolio");
 const deleteButtonEl = $("#button-delete-portfolio");
 
+var portfolio = {
+    name: "Mega Stonks",
+    positions : []
+};
+
 portfolioListEl.on("click", ".delete-position", function()
 {
-    alert(this);
     $(this).parent().remove();
 });
 
 addPositionEl.on("click", function()
 {
+    var newPosition = getNewPosition();
+    portfolio.positions.push(newPosition);
+    console.log(portfolio);
+
     const positionEl = $("<div>");
 
     const tickerEl = $("<h3>");
-    tickerEl.text("AAPL");
+    tickerEl.text(newPosition.ticker);
     const amountEl = $("<p>");
-    amountEl.text("Amount: 50");
+    amountEl.text("Amount: " + newPosition.size);
     const priceEl = $("<p>");
     priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
     const positionPriceEl = $("<p>");
@@ -43,3 +51,11 @@ deleteButtonEl.on("click", function()
 {
     localStorage.removeItem("portfolio-name");
 });
+
+function getNewPosition() // TODO: Query user for input
+{
+    return {
+        ticker: "AAPL",
+        size: 50
+    };
+}
