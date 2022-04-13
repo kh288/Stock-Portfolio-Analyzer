@@ -24,7 +24,7 @@ addPositionEl.on("click", function()
     portfolio.positions.push(newPosition);
     console.log(portfolio);
 
-    const positionEl = $("<div>");
+    const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink'>");
 
     const tickerEl = $("<h3>");
     tickerEl.text(newPosition.ticker);
