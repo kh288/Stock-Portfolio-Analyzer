@@ -49,7 +49,7 @@ function getAPI3(inputLink) {
         method: "GET"
     }).then(function (data) {
         // completeData = data;
-        console.log(data["Meta Data"]);
+        console.log(data["Time Series (Daily)"]);
         completeData = data["Meta Data"];
         return data;
     });
