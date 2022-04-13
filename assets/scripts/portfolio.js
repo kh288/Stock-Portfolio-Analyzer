@@ -74,3 +74,25 @@ function portName(event){
     console.log('sent portfolio name')
     portfolio.name = portNameEl.val()    
 };
+
+var tvDisplay = $('#totalValue')
+//display current name of portfolio and value
+function portfolioValue(portfolio,currentPrice){
+    //example for testing function
+    var portfolio = {
+        name: "Mega Stonks",
+        positions : [
+        {ticker: 'AAPL', size: 100},
+        {ticker: 'TSLA', size: 90}]
+    };
+    var value = 0;
+    
+    for(i=0;i<portfolio.positions.length;i++){
+        num = portfolio.positions[i].size * 10/* change to current price of stock */
+        value = value + num
+        console.log(value)
+        console.log(portfolio.positions[i])
+    }
+    tvDisplay.text(portfolio.name + " " +'value: '+ '$' + value)   
+}
+portfolioValue(portfolio);
