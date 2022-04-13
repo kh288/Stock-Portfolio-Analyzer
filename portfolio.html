@@ -4,42 +4,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Stock Portfolio Analyzer</title>
 </head>
 <body>
-    <header>
-        <h1>Stock Portfolio Analyzer</h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Introduction</a></li>
-                <li><a href="">Chart</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav class="container column-12 px-4 flex max-w-full justify-between bg-slate-800 h-20 items-center font-bold text-white text-2xl">
+        <h1 class="relative w-fit pl-2">Stock Portfolio Analyzer</h1>
+        <div class="container flex w-fit pr-2">
+            <a id="landPortfolio" class="relative pr-2 hover:underline" href="portfolio.html">Portfolio</a>
+            <p class="relative pb-1"> | </p>
+            <a id="landChart" class="relative pl-2 hover:underline" href="chart.html">Chart</a>
+        </div>
+    </nav>
     <main>
-        <h2>Portfolio Name: Mega Stonks</h2>
-        <section>
+        <div class="container max-w-full flex justify-center row mt-5">
+                <p class="border p-1">Portfolio Name: </p>
+                <textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>
+                <button id="inputBtn" class="border bg-slate-800 text-white h-10 p-1">Save portfolio name</button>
+        </div>
+        <section id="portfolio" class="container bg-slate-500 text-white max-w-full mt-5 mb-5">
             <!-- Todo: insert dynamically based on portfolio content -->
-            <div>
-                <h3>AAPL</h3>
-                <p>Amount: 100</p>
-                <p>Current Price: $165.75 (-4.34 -2.55%)</p>
-                <p>Position Value: $16,750.00 (-$434.00)</p>
+            <div id="example" class="flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink">
+                <h3>Symbol</h3>
+                <p>Amount:</p>
+                <p>Current Price:</p>
+                <p>Position Value:</p>
             </div>
-            <div>
-                <h3>TSLA</h3>
-                <p>Amount: 15</p>
-                <p>Current Price: $975.93 (-49.56 -4.83%)</p>
-                <p>Position Value: $14,638.95 (-$743.40)</p>
+            <div id="portfolio-list">
             </div>
         </section>
-        <div>
-            <button type="button">Save Portfolio</button>
-            <button type="button">Delete Portfolio</button>
+            <div class="container max-w-full flex justify-center row mt-5">
+                <p class="border">Search stock: </p>
+                <textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>
+                <button id="button-add-position" type="button" class="border bg-slate-800 text-white font bold p-1">Add Position</button>
+            </div>
+        </section>
+        <div class="container max-w-full justify-center flex pt-5">
+            <button id="button-save-portfolio" type="button" class="border bg-slate-800 text-white font bold p-1">Save Portfolio</button>
+            <button id="button-delete-portfolio" type="button" class="border bg-slate-800 text-white font bold p-1">Delete Portfolio</button>
         </div>
     </main>
     <footer>
-        <h2>Copyright 2022 Richard Ferry, Kevin Hernandez, and John Netzel. All rights reserved.</h2>
+        <h2 class="content-end mt-10">Copyright 2022 Richard Ferry, Kevin Hernandez, and John Netzel. All rights reserved.</h2>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="assets/scripts/portfolio.js"></script>
 </body>
 </html>
