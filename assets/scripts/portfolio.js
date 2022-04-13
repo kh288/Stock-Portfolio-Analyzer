@@ -4,6 +4,7 @@ const addPositionEl = $("#button-add-position");
 const saveButtonEl = $("#button-save-portfolio");
 const deleteButtonEl = $("#button-delete-portfolio");
 var portNameEl=$('#nameInput')
+
 var portfolio = {
     name: "Mega Stonks",
     positions : []
@@ -55,6 +56,7 @@ deleteButtonEl.on("click", function()
 {
     localStorage.removeItem("portfolio-name");
     alert("Delete button pressed!");
+
 });
 
 function getNewPosition() // TODO: Query user for input
