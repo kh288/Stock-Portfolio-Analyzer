@@ -21,7 +21,7 @@
         <dialog id="enter-portfolio-name-dialog">
             <p>Enter a new name for your portfolio</p>
             <form method="dialog">
-                <input id="enter-portfolio-name-dialog-input" name="portfolio-name"></input>
+                <input id="enter-portfolio-name-dialog-input" name="portfolio-name" required></input>
                 <div>
                     <button id="enter-portfolio-name-dialog-cancel" value="cancel">Cancel</button>
                     <button id="enter-portfolio-name-dialog-submit" value="ok">OK</button>
@@ -33,11 +33,11 @@
             <form method="dialog">
                 <div>
                     <label for="ticker">Stock Ticker: </label>
-                    <input id="enter-position-dialog-ticker-input" name="ticker"></input>
+                    <input id="enter-position-dialog-ticker-input" name="ticker" required></input>
                 </div>
                 <div>
                     <label for="size">Position Size: </label>
-                    <input id="enter-position-dialog-size-input" name="size"></input>
+                    <input id="enter-position-dialog-size-input" name="size" type="number" required></input>
                 </div>
                 <div>
                     <button id="enter-position-dialog-cancel" value="cancel">Cancel</button>
@@ -62,7 +62,7 @@
             </div>
         </section>
             <div class="container max-w-full flex justify-center row mt-5">
-                <p class="border">Search stock: </p>
+                <!--<p class="border">Search stock: </p>-->
                 <!--<textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>-->
                 <button id="button-add-position" type="button" class="border bg-slate-800 text-white font bold p-1">Add Position</button>
             </div>

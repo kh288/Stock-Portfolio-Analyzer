@@ -60,7 +60,8 @@ portfolioPositionDialogEl.on("close", function()
         portfolio.positions.push(newPosition);
         addPositionToList(newPosition);
     }
-    //refreshPortfolioName();
+    portfolioPositionDialogTickerInputEl.val("");
+    portfolioPositionDialogSizeInputEl.val("");
 });
 
 function getNewPosition(ticker, size) // TODO: Query user for input
