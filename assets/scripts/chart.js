@@ -4,56 +4,52 @@ var ticker = "IBM";
 var time = "5min"; // for intra-day intervals
 var apiLink = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+ticker+"&interval="+time+"&apikey="+apiKey;
 var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+ticker+"&apikey="+apiKey;
+// TEST LINK: 
+// https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AMC&apikey=2JYN2GFONTCPQSJM
 
-// var luxTest = luxon
-// console.log(luxon.DateTime)
-
-const startingdate = luxon.DateTime.fromRFC2822('01 Aug 2021 00:00 GMT')
-const startingdate2 = luxon.DateTime.fromRFC2822('02 Aug 2021 00:00 GMT')
-
-console.log(startingdate)
-
-
-const data =  {
-    datasets: [{
-        data: [
-        {
-            x: startingdate.valueOf(),
-            o: 1,
-            h: 1.50,
-            l: 0.75,
-            c: 1.25
-        },
-        {
-            x: startingdate2.valueOf(),
-            o: 1.25,
-            h: 2,
-            l: 1.00,
-            c: 1.50
+// function to convert data the API into a useable format for the chart
+function createChartData(apiInput) {
+    var data =  {
+        datasets: [{
+            label: ticker,
+            data: []
         }]
-        // label: ticker,
-    }]
-};
+    };
+    
+    // This is the main for loop to create our candle sticks from the API information
+    for (i = 0; i < Object.keys(apiInput).length; i++) {
+        // This creates a new object for each candle for the dataset to live
+        data.datasets[0].data[i] = {
+            x: luxon.DateTime.fromSQL(Object.keys(apiInput)[i]).valueOf(), 
+            o: apiInput[Object.keys(apiInput)[i]]["1. open"], 
+            h: apiInput[Object.keys(apiInput)[i]]["2. high"], 
+            l: apiInput[Object.keys(apiInput)[i]]["3. low"], 
+            c: apiInput[Object.keys(apiInput)[i]]["4. close"]
+        }
+    }
+    // console.log(data);
+    return data;
+}
 
-const config = {
-    type: 'candlestick',
-    data
-};
-
-const myChart = new Chart(document.getElementById('myChart'),config);
-
-var completeData;
-
-function getAPI3(inputLink) {
+// 
+function getAPI(inputLink) {
     $.ajax({
         url: inputLink,
         method: "GET"
-    }).then(function (data) {
-        // completeData = data;
-        console.log(data["Time Series (Daily)"]);
-        completeData = data["Meta Data"];
-        return data;
+    }).then(function (output) {
+        // Get data from API and store it into our data variable
+        var data = createChartData(output["Time Series (Daily)"]);
+        // This config object is used in the chart, we're also putting chart in it
+        const config = {
+            type: 'candlestick',
+            data
+        };
+        // Create a chart. Use the data we told it to use from earlier
+        const myChart = new Chart(document.getElementById('myChart'),config);
+
+        // createChartData()
+        return;
     });
 }
 
-getAPI3(apiLinkDay);
+getAPI(apiLinkDay);
