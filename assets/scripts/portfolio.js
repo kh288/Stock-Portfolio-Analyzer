@@ -9,13 +9,14 @@ const portfolioListEl = $("#portfolio-list");
 const addPositionEl = $("#button-add-position");
 const saveButtonEl = $("#button-save-portfolio");
 const deleteButtonEl = $("#button-delete-portfolio");
-const portNameEditButtonEl=$('#nameInput');
+const portNameEditButtonEl=$('#inputBtn');
 const portfolioAddPositionButtonEl=$('#button-add-position');
-
-var portfolio = {
+const defaultPortfolio = {
     name: "Mega Stonks",
     positions : []
 };
+
+var portfolio;
 
 portfolioListEl.on("click", ".delete-position", function()
 {
@@ -28,41 +29,18 @@ portfolioListEl.on("click", ".delete-position", function()
 
 addPositionEl.on("click", function()
 {
-    /*var newPosition = getNewPosition();
-    portfolio.positions.push(newPosition);
-    console.log(portfolio);
-
-    const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink'>");
-
-    const tickerEl = $("<h3>");
-    tickerEl.text(newPosition.ticker);
-    const amountEl = $("<p>");
-    amountEl.text("Amount: " + newPosition.size);
-    const priceEl = $("<p>");
-    priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
-    const positionPriceEl = $("<p>");
-    positionPriceEl.text("Position Value: $8,375.00 (-$217.00)");
-    const deleteButtonEl = $("<button class='delete-position' type='button'>");
-    deleteButtonEl.text("Delete Position");
-    
-    tickerEl.appendTo(positionEl);
-    amountEl.appendTo(positionEl);
-    priceEl.appendTo(positionEl);
-    positionPriceEl.appendTo(positionEl);
-    deleteButtonEl.appendTo(positionEl);
-
-    positionEl.appendTo(portfolioListEl);*/
     portfolioPositionDialogEl[0].showModal();
 });
 
 saveButtonEl.on("click", function()
 {
-    localStorage.setItem("portfolio-name", "Mega Stonks");
+    localStorage.setItem("portfolio", JSON.stringify(portfolio));
+    console.log(portfolio);
 });
 
 deleteButtonEl.on("click", function()
 {
-    localStorage.removeItem("portfolio-name");
+    localStorage.removeItem("portfolio");
 });
 
 portfolioNameDialogEl.on("close", function()
@@ -79,6 +57,7 @@ portfolioPositionDialogEl.on("close", function()
     if(portfolioPositionDialogEl[0].returnValue === "ok")
     {
         var newPosition = getNewPosition(portfolioPositionDialogTickerInputEl.val(), portfolioPositionDialogSizeInputEl.val());
+        portfolio.positions.push(newPosition);
         addPositionToList(newPosition);
     }
     //refreshPortfolioName();
@@ -128,8 +107,18 @@ function refreshPortfolioName()
     portfolioNameDialogInputEl.val(portfolio.name);
 }
 
+function loadPortfolio()
+{
+    portfolio = JSON.parse(localStorage.getItem("portfolio")) || defaultPortfolio;
+    for(var position of portfolio.positions)
+    {
+        addPositionToList(position);
+    }
+}
+
 function init()
 {
+    loadPortfolio();
     refreshPortfolioName();
 }
 
