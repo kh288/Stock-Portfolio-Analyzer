@@ -8,10 +8,22 @@ var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&s
 // var luxTest = luxon
 // console.log(luxon.DateTime)
 
+
+// for (const key in jsonObject) {
+//     (`${key}: ${jsonObject[key]}`);
+// }
+
+// function parseJsonInput(json) {
+//     return JSON.parse(json);
+// }
+// console.log(jsonObject)
+
 // This is the big request from the API to store in.
 let inputAPIDataArray;
 
-const jsonObject = {
+// Object.keys(jsonObject)[0] = '2022-04-07'
+// jsonObject[Object.keys(jsonObject)[0]]
+var jsonObject = {
     "2022-04-12": {
     "1. open": "126.4200",
     "2. high": "127.3400",
@@ -41,53 +53,54 @@ const jsonObject = {
     "5. volume": "3538317"
     }
 }
-// function parseJsonInput(json) {
-//     return JSON.parse(json);
-// }
-// console.log(jsonObject)
+
+// var jsonLength = keys(jsonObject).length;
+var testArrayThing = [];
+
 // We use .fromSQL to convert into the proper INPUT time we're getting from the API
 
 const testTime = luxon.DateTime.fromSQL('2021-11-18');
 const testTime2 = luxon.DateTime.fromSQL('2021-11-19');
 
 function createChartData(apiInput) {
-    const data = {
+    var data = {
         datasets: [{
             label: ticker,
-            data: [
-            {
-                x: luxon.DateTime.fromSQL(apiInput).valueOf(),
-                o: 1,
-                h: 1.50,
-                l: 0.75,
-                c: 1.25
-            },
-            {
-                x: testTime2.valueOf(),
-                o: 1.25,
-                h: 2,
-                l: 1.00,
-                c: 1.50
+            data: [{
+                x: Object.keys(jsonObject)[0],
+                o: jsonObject[Object.keys(jsonObject)[0]]["1. open"],
+                h: jsonObject[Object.keys(jsonObject)[0]]["2. high"],
+                l: jsonObject[Object.keys(jsonObject)[0]]["3. low"],
+                c: jsonObject[Object.keys(jsonObject)[0]]["4. close"]
             }]
-            // label: ticker,
         }]
     };
+
+
+    console.log("DATA: ");
+    console.log(data);
+    // var temp = keys(apiInput);
+    // STORING NAME IN FIRST SLOT
+    // data.datasets[0].data[0] = Object.keys(jsonObject)[0];
+    // for (i = 0; i < Object.keys(apiInput).length; i++) {
+    //         data.datasets[0].data[0] = Object.keys(jsonObject)[0];
+    // }
+    return data;
 }
 
-createChartData(jsonObject);
+const chartData = createChartData(jsonObject);
+// chartData.datasets[0].data[0]
 
 const data =  {
     datasets: [{
         label: ticker,
-        data: [
-        {
+        data: [{
             x: testTime.valueOf(),
             o: 1,
             h: 1.50,
             l: 0.75,
             c: 1.25
-        },
-        {
+        },{
             x: testTime2.valueOf(),
             o: 1.25,
             h: 2,
