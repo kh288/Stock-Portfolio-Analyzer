@@ -8,7 +8,19 @@ const testBenchmarkValues = [1000, 1040, 1070, 990, 800, 1150];
 const testPortfolioValues = [1000, 1050, 1090, 900, 890, 1200];
 
 /**
- * Given a set of portfolio values at equally-spaced time intervals, computes the return ratess (change in value relative to the initial value) for each time period
+ * Given a set of portfolio values at equally-spaced time intervals, computes the return rate for the entire interval
+ * @param {*} portfolioValues an array of numbers representing portfolio total values
+ * @returns an number representing the return rates for the interval of the input array
+ */
+function getPortfolioReturnRate(portfolioValues)
+{
+    var portfolioReturn = portfolioValues[portfolioValues.length - 1] - portfolioValues[0];
+    portfolioReturn /= portfolioValues[0];
+    return portfolioReturn;
+}
+
+/**
+ * Given a set of portfolio values at equally-spaced time intervals, computes the return rates (change in value relative to the initial value) for each time period
  * @param {*} portfolioValues an array of numbers representing portfolio total values
  * @returns an array of numbers representing the return rates between time periods of the input array
  */
@@ -108,8 +120,7 @@ function alphaRequestAjax(benchmarkReturns, portfolioReturns)
         contentType: 'application/json; charset=UTF-8',
         data: createAlphaRequestData(benchmarkReturns, portfolioReturns)
     }).then(function (output) {
-        console.log(output.portfolios[0].portfolioAlpha);
-        // TODO fill in webpage with value
+        portfolioAlphaEl.text(percentFormatter.format(output.portfolios[0].portfolioAlpha));
     });
 }
 
@@ -121,8 +132,7 @@ function betaRequestAjax(benchmarkReturns, portfolioReturns)
         contentType: 'application/json; charset=UTF-8',
         data: createBetaRequestData(benchmarkReturns, portfolioReturns)
     }).then(function (output) {
-        console.log(output.portfolios[0].portfolioBeta);
-        // TODO fill in webpage with value
+        portfolioBetaEl.text(unitlessFormatter.format(output.portfolios[0].portfolioBeta));
     });
 }
 
@@ -134,8 +144,7 @@ function volatilityRequestAjax(portfolioValues)
         contentType: 'application/json; charset=UTF-8',
         data: createVolatilityRequestData(portfolioValues)
     }).then(function (output) {
-        console.log(output.portfolios[0].portfolioVolatility);
-        // TODO fill in webpage with value
+        portfolioVolatilityEl.text(percentFormatter.format(output.portfolios[0].portfolioVolatility));
     });
 }
 
@@ -147,7 +156,6 @@ function sharpeRatioRequestAjax(portfolioValues)
         contentType: 'application/json; charset=UTF-8',
         data: createSharpeRatioRequestData(portfolioValues)
     }).then(function (output) {
-        console.log(output.portfolios[0].portfolioSharpeRatio);
-        // TODO fill in webpage with value
+        portfolioSharpeRatioEl.text(unitlessFormatter.format(output.portfolios[0].portfolioSharpeRatio));
     });
 }
