@@ -19,6 +19,7 @@ function parseLineData(apiInput) {
                               (Math.floor(Math.random() * 180) + 20),
         tension: 0.15
     }];
+
     var labels = [];
     
     // 54 weeks = year
@@ -37,32 +38,34 @@ function parseLineData(apiInput) {
 
 var apiData;
 var dataParsed;
+// Declate our config for the chart
+const config = {
+    type: 'line'
+};
+// Declare new chart
+const lineChart = new Chart(document.getElementById('line-chart'), config);
+// var testChartData;
 
-async function getAPI(inputLink) {
+function getAPI(inputLink) {
     // We need to fetch the data since it takes some time to retreive
     $.ajax({
         url: inputLink,
         method: "GET"
     }).then(function (output) {
-        // chartData = output["Time Series (Daily)"];
-        apiData = output["Weekly Time Series"];
-
-        // dataParsed = parseLineData(output["Time Series (Daily)"]);
-        dataParsed = parseLineData(output/* ["Weekly Time Series"] */);
+        dataParsed = parseLineData(output);
         
         const chartData = {
             labels: dataParsed[1],
             datasets: dataParsed[0]
         };
+        // Move data back into our config
+        config.data = chartData;
 
-        const config = {
-            type: 'line',
-            data: chartData
-        };
-
-        const lineChart = new Chart(document.getElementById('line-chart'), config);
-        // parseLineData()
-        return config;
+        // Testing variable
+        // testChartData = chartData;
+        
+        // Used to update the chart once the data is grabbed
+        lineChart.update();
     });
 }
 
@@ -86,6 +89,7 @@ function insertPortName(){
         div.appendTo(card)
     }
 }
+
 insertPortName();
 //remove all content from aside info bar
 function clear(){
@@ -106,9 +110,12 @@ card.on('click',function(event){
     const K = "2JYN2GFONTCPQSJM";
     //var ticker = "MSFT";
     var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
+    
     getAPI(apiLinkDay);
 
+    // for loop to tell the API how many times to send a request to get API data
 
+    // const lineChart = new Chart(document.getElementById('line-chart'), getAPI(apiLinkDay));
 })
 
 //display current name of portfolio and value
