@@ -54,7 +54,7 @@ function getAPI(inputLink) {
 
 getAPI(apiLinkDay);
 // grabs local storage data and displays names in the aside bar 
-insertPortName();
+//insertPortName();
 var card = $('#chartPortfolio')
 function insertPortName(){
     var portName = JSON.parse(localStorage.getItem("portfolio"));
@@ -69,4 +69,9 @@ function insertPortName(){
         pn.appendTo(div);
         div.appendTo(card)
     }
+}
+//remove all content from aside info bar
+function clear(){
+    $('#asideTitle').text('')
+    card.empty()
 }
