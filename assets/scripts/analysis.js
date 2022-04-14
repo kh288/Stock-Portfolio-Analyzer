@@ -1,3 +1,12 @@
+const portfolioOptimizerBaseApiUrl =  "https://api.portfoliooptimizer.io/v1";
+const portfolioOptimizerAlphaUrl = "/portfolio/analysis/alpha";
+const portfolioOptimizerBetaUrl = "/portfolio/analysis/beta";
+const portfolioOptimizeVolatilityUrl = "/portfolio/analysis/volatility";
+const portfolioOptimizerSharpeRatioUrl = "/portfolio/analysis/sharpe-ratio";
+
+const testBenchmarkValues = [1000, 1040, 1070, 990, 800, 1150];
+const testPortfolioValues = [1000, 1050, 1090, 900, 890, 1200];
+
 /**
  * Given a set of portfolio values at equally-spaced time intervals, computes the return ratess (change in value relative to the initial value) for each time period
  * @param {*} portfolioValues an array of numbers representing portfolio total values
@@ -30,3 +39,31 @@ function getPortfolioAverageReturn(portfolioReturns)
     portfolioAverageReturn /= portfolioReturns.length;
     return portfolioAverageReturn;
 }
+
+function createAlphaRequestData(benchmarkReturnRates, portfolioReturnRates)
+{
+    return JSON.stringify({
+        benchmarkReturns: benchmarkReturnRates,
+        riskFreeRate: 0.01,
+        portfolios: [
+            {
+                portfolioReturns: portfolioReturnRates
+            }
+        ]
+    });
+}
+
+function alphaRequestAjax(benchmarkReturns, portfolioReturns)
+{
+    $.ajax({
+        url: portfolioOptimizerBaseApiUrl + portfolioOptimizerAlphaUrl,
+        method: "POST",
+        contentType: 'application/json; charset=UTF-8',
+        data: createAlphaRequestData(benchmarkReturns, portfolioReturns)
+    }).then(function (output) {
+        console.log(output.portfolios[0].portfolioAlpha);
+        // TODO fill in webpage with value
+    });
+}
+
+alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
