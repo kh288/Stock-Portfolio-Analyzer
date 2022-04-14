@@ -1,7 +1,7 @@
 const portfolioOptimizerBaseApiUrl =  "https://api.portfoliooptimizer.io/v1";
 const portfolioOptimizerAlphaUrl = "/portfolio/analysis/alpha";
 const portfolioOptimizerBetaUrl = "/portfolio/analysis/beta";
-const portfolioOptimizeVolatilityUrl = "/portfolio/analysis/volatility";
+const portfolioOptimizerVolatilityUrl = "/portfolio/analysis/volatility";
 const portfolioOptimizerSharpeRatioUrl = "/portfolio/analysis/sharpe-ratio";
 
 const testBenchmarkValues = [1000, 1040, 1070, 990, 800, 1150];
@@ -53,6 +53,53 @@ function createAlphaRequestData(benchmarkReturnRates, portfolioReturnRates)
     });
 }
 
+function createBetaRequestData(benchmarkReturnRates, portfolioReturnRates)
+{
+    return JSON.stringify({
+        benchmarkReturns: benchmarkReturnRates,
+        riskFreeRate: 0.01,
+        portfolios: [
+            {
+                portfolioReturns: portfolioReturnRates
+            }
+        ]
+    });
+}
+
+function createVolatilityRequestData(portfolioValues)
+{
+    return JSON.stringify({
+        portfolios: [
+            {
+                portfolioValues: portfolioValues
+            }
+        ]
+    });
+}
+
+function createVolatilityRequestData(portfolioValues)
+{
+    return JSON.stringify({
+        portfolios: [
+            {
+                portfolioValues: portfolioValues
+            }
+        ]
+    });
+}
+
+function createSharpeRatioRequestData(portfolioValues)
+{
+    return JSON.stringify({
+        riskFreeRate: 0.01,
+        portfolios: [
+            {
+                portfolioValues: portfolioValues
+            }
+        ]
+    });
+}
+
 function alphaRequestAjax(benchmarkReturns, portfolioReturns)
 {
     $.ajax({
@@ -66,4 +113,41 @@ function alphaRequestAjax(benchmarkReturns, portfolioReturns)
     });
 }
 
-alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+function betaRequestAjax(benchmarkReturns, portfolioReturns)
+{
+    $.ajax({
+        url: portfolioOptimizerBaseApiUrl + portfolioOptimizerBetaUrl,
+        method: "POST",
+        contentType: 'application/json; charset=UTF-8',
+        data: createBetaRequestData(benchmarkReturns, portfolioReturns)
+    }).then(function (output) {
+        console.log(output.portfolios[0].portfolioBeta);
+        // TODO fill in webpage with value
+    });
+}
+
+function volatilityRequestAjax(portfolioValues)
+{
+    $.ajax({
+        url: portfolioOptimizerBaseApiUrl + portfolioOptimizerVolatilityUrl,
+        method: "POST",
+        contentType: 'application/json; charset=UTF-8',
+        data: createVolatilityRequestData(portfolioValues)
+    }).then(function (output) {
+        console.log(output.portfolios[0].portfolioVolatility);
+        // TODO fill in webpage with value
+    });
+}
+
+function sharpeRatioRequestAjax(portfolioValues)
+{
+    $.ajax({
+        url: portfolioOptimizerBaseApiUrl + portfolioOptimizerSharpeRatioUrl,
+        method: "POST",
+        contentType: 'application/json; charset=UTF-8',
+        data: createSharpeRatioRequestData(portfolioValues)
+    }).then(function (output) {
+        console.log(output.portfolios[0].portfolioSharpeRatio);
+        // TODO fill in webpage with value
+    });
+}
