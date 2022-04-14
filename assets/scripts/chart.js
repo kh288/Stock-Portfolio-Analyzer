@@ -8,6 +8,12 @@ var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&
 // GLOBALLY STORE CHART DATA
 // var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=IBM&apikey=2JYN2GFONTCPQSJM";
 
+const portfolioReturnEl = $("#portfolio-return");
+const portfolioAlphaEl = $("#portfolio-alpha");
+const portfolioBetaEl = $("#portfolio-beta");
+const portfolioVolatilityEl = $("#portfolio-volatility");
+const portfolioSharpeRatioEl = $("#portfolio-sharpe-ratio");
+
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
     var datasets = [{
@@ -71,12 +77,22 @@ async function getAPI(inputLink) {
 
         const lineChart = new Chart(document.getElementById('line-chart'), config);
         // parseLineData()
+
+        updatePortfolioStats();
+
         return config;
     });
 }
 
 getAPI(apiLinkDay);
 
+function updatePortfolioStats()
+{
+    alphaRequestAjax(testBenchmarkValues, testPortfolioValues);
+    betaRequestAjax(testBenchmarkValues, testPortfolioValues);
+    volatilityRequestAjax(testPortfolioValues);
+    sharpeRatioRequestAjax(testPortfolioValues);
+}
 
 // function parseCandleData(apiInput) {
 //     // This is the main for loop to create our candle sticks from the API information
