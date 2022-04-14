@@ -2,16 +2,16 @@
 // https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=IBM&apikey=2JYN2GFONTCPQSJM
 // var time = "5min"; // for intra-day intervals
 // var apiLink = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+ticker+"&interval="+time+"&apikey="+K;
-const K = "2JYN2GFONTCPQSJM";
-var ticker = "MSFT";
-var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
+// const K = "2JYN2GFONTCPQSJM";
+// var ticker="MSFT";
+// var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
 // GLOBALLY STORE CHART DATA
 // var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=IBM&apikey=2JYN2GFONTCPQSJM";
 
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
     var datasets = [{
-        label: ticker + " | Year Data",
+        label: JSON.parse(localStorage.portfolio).positions[0].ticker + " | Year Data",
         data: [],
         fill: true,
         borderColor: '#000',
@@ -75,7 +75,7 @@ async function getAPI(inputLink) {
     });
 }
 
-getAPI(apiLinkDay);
+//getAPI(apiLinkDay);
 
 
 // function parseCandleData(apiInput) {
@@ -187,30 +187,38 @@ getAPI(apiLinkDay);
 //insertPortName();
 var card = $('#chartPortfolio')
 function insertPortName(){
-    var portName = JSON.parse(localStorage.getItem("portfolio"));
+    var portName = JSON.parse(localStorage.getItem('portfolio'));
     // test var portName = [{
     //     name: "portfolio",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]},
     //     { name: "wilbert",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]}]
-    for(i=0;i<portName.length;i++){
+    for(i=0;i<portName.positions.length;i++){
         var div = $('<div>')
         var pn = $('<a class="hover:underline">');
-        var title = portName[i].name;
+        var title = portName.positions[i].ticker;
         pn.text(title);
-        pn.attr('data',i)
+        pn.attr('data',portName.positions[i].ticker)
         pn.appendTo(div);
         div.appendTo(card)
     }
 }
+insertPortName();
 //remove all content from aside info bar
 function clear(){
     $('#asideTitle').text('')
     card.empty()
 }
 // add click event listener to portfolio and stats location
+var ticker;
 card.on('click',function(event){
     event.stopPropagation();
     clear();
     $('#asideTitle').text('STATS');
+    ticker=JSON.parse(localStorage.portfolio).positions[0].ticker
+    const K = "2JYN2GFONTCPQSJM";
+    //var ticker = "MSFT";
+    var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
+    getAPI(apiLinkDay);
+
 
 })
 //display current name of portfolio and value
