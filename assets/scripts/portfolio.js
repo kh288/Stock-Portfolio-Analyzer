@@ -27,8 +27,21 @@ portfolioListEl.on("click", ".delete-position", function()
     deletedPosition.remove();
 });
 
+portfolioListEl.on("click", ".edit-position", function()
+{
+    var positionToEdit = portfolio.positions[$(this).parents(".stock-position").index()]; // Gets the position corresponding the the position whose edit button was pressed
+    // Prefill dialog contents
+    $("#enter-position-dialog-submit").val("edit");
+    $("#enter-position-dialog-ticker-input").val(positionToEdit.ticker);
+    $("#enter-position-dialog-size-input").val(positionToEdit.size);
+
+    portfolioPositionDialogEl.data("edit-position-index", $(this).parents(".stock-position").index()) // Stashes the index of the position being edited into the dialog box as a data attribute
+    portfolioPositionDialogEl[0].showModal();
+});
+
 addPositionEl.on("click", function()
 {
+    $("#enter-position-dialog-submit").val("ok");
     portfolioPositionDialogEl[0].showModal();
 });
 
@@ -54,17 +67,22 @@ portfolioNameDialogEl.on("close", function()
 
 portfolioPositionDialogEl.on("close", function()
 {
-    if(portfolioPositionDialogEl[0].returnValue === "ok")
+    if(portfolioPositionDialogEl[0].returnValue === "ok") // Dialog returns from add position
     {
         var newPosition = getNewPosition(portfolioPositionDialogTickerInputEl.val(), portfolioPositionDialogSizeInputEl.val());
         portfolio.positions.push(newPosition);
         addPositionToList(newPosition);
     }
+    else if(portfolioPositionDialogEl[0].returnValue === "edit") // Dialog returns from edit position
+    {
+        var positionToEdit = portfolio.positions[portfolioPositionDialogEl.data("edit-position-index")];
+        editPosition(positionToEdit, portfolioPositionDialogTickerInputEl.val(), portfolioPositionDialogSizeInputEl.val());
+    }
     portfolioPositionDialogTickerInputEl.val("");
     portfolioPositionDialogSizeInputEl.val("");
 });
 
-function getNewPosition(ticker, size) // TODO: Query user for input
+function getNewPosition(ticker, size)
 {
     return {
         ticker: ticker,
@@ -99,6 +117,12 @@ function addPositionToList(position)
     deleteButtonEl.appendTo(buttonPanelEl);
 
     positionEl.appendTo(portfolioListEl);
+}
+
+function editPosition(position, newTicker, newSize)
+{
+    position.ticker = newTicker;
+    position.size = newSize;
 }
 
 //button function to save name from textarea box
