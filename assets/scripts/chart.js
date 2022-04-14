@@ -38,6 +38,7 @@ function getAPI(inputLink) {
         method: "GET"
     }).then(function (output) {
         // Get data from API and store it into our data variable
+        console.log(output)
         var data = createChartData(output["Time Series (Daily)"]);
         // This config object is used in the chart, we're also putting chart in it
         const config = {
@@ -75,3 +76,10 @@ function clear(){
     $('#asideTitle').text('')
     card.empty()
 }
+// add click event listener to portfolio and stats location
+card.on('click',function(event){
+    event.stopPropagation();
+    clear();
+    $('#asideTitle').text('STATS');
+
+})
