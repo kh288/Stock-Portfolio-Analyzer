@@ -53,3 +53,20 @@ function getAPI(inputLink) {
 }
 
 getAPI(apiLinkDay);
+// grabs local storage data and displays names in the aside bar 
+insertPortName();
+var card = $('#chartPortfolio')
+function insertPortName(){
+    var portName = JSON.parse(localStorage.getItem("portfolio"));
+    // test var portName = [{
+    //     name: "portfolio",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]},
+    //     { name: "wilbert",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]}]
+    for(i=0;i<portName.length;i++){
+        var div = $('<div>')
+        var pn = $('<a class="hover:underline">');
+        var title = portName[i].name;
+        pn.text(title);
+        pn.appendTo(div);
+        div.appendTo(card)
+    }
+}
