@@ -12,11 +12,11 @@ const testPortfolioValues = [1000, 1050, 1090, 900, 890, 1200];
  * @param {*} portfolioValues an array of numbers representing portfolio total values
  * @returns an number representing the return rates for the interval of the input array
  */
-function getPortfolioReturnRates(portfolioValues)
+function getPortfolioReturnRate(portfolioValues)
 {
     var portfolioReturn = portfolioValues[portfolioValues.length - 1] - portfolioValues[0];
     portfolioReturn /= portfolioValues[0];
-    return portfolioValues;
+    return portfolioReturn;
 }
 
 /**

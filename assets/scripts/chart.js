@@ -88,10 +88,24 @@ getAPI(apiLinkDay);
 
 function updatePortfolioStats()
 {
-    alphaRequestAjax(testBenchmarkValues, testPortfolioValues);
-    betaRequestAjax(testBenchmarkValues, testPortfolioValues);
-    volatilityRequestAjax(testPortfolioValues);
-    sharpeRatioRequestAjax(testPortfolioValues);
+    // Portfolio return is different since it's calculated locally
+    portfolioReturnEl.text(getPortfolioReturnRate(testPortfolioValues));
+
+    // Timeouts are to make sure we aren't slamming the Portfolio Optimizer API with too mary requests at once.
+    // It's limited for anomymous users like us.
+    alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+    setTimeout(function()
+    {
+        betaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+    }, 1100);
+    setTimeout(function()
+    {
+        volatilityRequestAjax(testPortfolioValues)
+    }, 2200);
+    setTimeout(function()
+    {
+        sharpeRatioRequestAjax(testPortfolioValues);
+    }, 3300);
 }
 
 // function parseCandleData(apiInput) {
