@@ -67,6 +67,7 @@ function insertPortName(){
         var pn = $('<a class="hover:underline">');
         var title = portName[i].name;
         pn.text(title);
+        pn.attr('data',i)
         pn.appendTo(div);
         div.appendTo(card)
     }
@@ -83,3 +84,17 @@ card.on('click',function(event){
     $('#asideTitle').text('STATS');
 
 })
+//display current name of portfolio and value
+// function portfolioValue(portfolio,currentPrice){
+//     var value = 0;
+//     var portName = JSON.parse(localStorage.getItem("portfolio"));
+//     //if statement to prevent error if portfolio is undefined
+//     if (portfolio){
+//     for(i=0;i<portfolio.positions.length;i++){
+//         num = portfolio.positions[i].size * 10/* change to current price of stock */
+//         value += num
+//     }
+//     var tvDisplay = $('<div>')
+//     tvDisplay.text(portfolio.name + " " +'value: '+ '$' + value)  } 
+//     tvDisplay.appendTo(card);
+// }
