@@ -20,11 +20,11 @@ var portfolio;
 
 portfolioListEl.on("click", ".delete-position", function()
 {
-    var deletedPositionIndex = $(this).parent().index();
+    var deletedPosition = $(this).parents(".stock-position");
+    var deletedPositionIndex = deletedPosition.index();
     portfolio.positions.splice(deletedPositionIndex, 1);
-    console.log(portfolio);
 
-    $(this).parent().remove();
+    deletedPosition.remove();
 });
 
 addPositionEl.on("click", function()
@@ -74,7 +74,7 @@ function getNewPosition(ticker, size) // TODO: Query user for input
 
 function addPositionToList(position)
 {
-    const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink'>");
+    const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink stock-position'>");
 
     const tickerEl = $("<h3>");
     tickerEl.text(position.ticker);
@@ -84,6 +84,9 @@ function addPositionToList(position)
     priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
     const positionPriceEl = $("<p>");
     positionPriceEl.text("Position Value: $8,375.00 (-$217.00)");
+    const buttonPanelEl = $("<div>");
+    const editButtonEl = $("<button class='edit-position' type='button'>");
+    editButtonEl.text("Edit Position");
     const deleteButtonEl = $("<button class='delete-position' type='button'>");
     deleteButtonEl.text("Delete Position");
     
@@ -91,7 +94,9 @@ function addPositionToList(position)
     amountEl.appendTo(positionEl);
     priceEl.appendTo(positionEl);
     positionPriceEl.appendTo(positionEl);
-    deleteButtonEl.appendTo(positionEl);
+    buttonPanelEl.appendTo(positionEl);
+    editButtonEl.appendTo(buttonPanelEl);
+    deleteButtonEl.appendTo(buttonPanelEl);
 
     positionEl.appendTo(portfolioListEl);
 }
