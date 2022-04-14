@@ -14,6 +14,16 @@ const portfolioBetaEl = $("#portfolio-beta");
 const portfolioVolatilityEl = $("#portfolio-volatility");
 const portfolioSharpeRatioEl = $("#portfolio-sharpe-ratio");
 
+const unitlessFormatter = new Intl.NumberFormat(navigator.language, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 3
+})
+const percentFormatter = new Intl.NumberFormat(navigator.language, {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+})
+
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
     var datasets = [{
@@ -89,7 +99,7 @@ getAPI(apiLinkDay);
 function updatePortfolioStats()
 {
     // Portfolio return is different since it's calculated locally
-    portfolioReturnEl.text(getPortfolioReturnRate(testPortfolioValues));
+    portfolioReturnEl.text(percentFormatter.format(getPortfolioReturnRate(testPortfolioValues)));
 
     // Timeouts are to make sure we aren't slamming the Portfolio Optimizer API with too mary requests at once.
     // It's limited for anomymous users like us.
