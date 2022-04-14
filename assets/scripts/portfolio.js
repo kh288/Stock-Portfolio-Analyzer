@@ -75,9 +75,12 @@ portfolioPositionDialogEl.on("close", function()
     }
     else if(portfolioPositionDialogEl[0].returnValue === "edit") // Dialog returns from edit position
     {
-        var positionToEdit = portfolio.positions[portfolioPositionDialogEl.data("edit-position-index")];
+        var positionToEditIndex = portfolioPositionDialogEl.data("edit-position-index");
+        var positionToEdit = portfolio.positions[positionToEditIndex];
         editPosition(positionToEdit, portfolioPositionDialogTickerInputEl.val(), portfolioPositionDialogSizeInputEl.val());
+        refreshPortfolioPosition(positionToEditIndex);
     }
+    // Reset dialog
     portfolioPositionDialogTickerInputEl.val("");
     portfolioPositionDialogSizeInputEl.val("");
 });
@@ -94,9 +97,9 @@ function addPositionToList(position)
 {
     const positionEl = $("<div class='flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink stock-position'>");
 
-    const tickerEl = $("<h3>");
+    const tickerEl = $("<h3 class='ticker'>");
     tickerEl.text(position.ticker);
-    const amountEl = $("<p>");
+    const amountEl = $("<p class='size'>");
     amountEl.text("Amount: " + position.size);
     const priceEl = $("<p>");
     priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
@@ -135,6 +138,15 @@ function refreshPortfolioName()
 {
     portfolioNameEl.text(portfolio.name);
     portfolioNameDialogInputEl.val(portfolio.name);
+}
+
+function refreshPortfolioPosition(positionIndex)
+{
+    var portfolioPosition = portfolio.positions[positionIndex];
+    var portfolioPositionEl = portfolioListEl.children().eq(positionIndex);
+    console.log(portfolioPositionEl);
+    portfolioPositionEl.find(".ticker").text(portfolioPosition.ticker);
+    portfolioPositionEl.find(".size").text("Amount: " + portfolioPosition.size);
 }
 
 function loadPortfolio()
