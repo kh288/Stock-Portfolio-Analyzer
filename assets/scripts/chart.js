@@ -11,7 +11,7 @@
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
     var datasets = [{
-        label: JSON.parse(localStorage.portfolio).positions[0].ticker + " | Year Data",
+        label: apiInput['Meta Data']['2. Symbol'] + " | Year Data",
         data: [],
         fill: true,
         borderColor: '#000',
@@ -22,10 +22,10 @@ function parseLineData(apiInput) {
     // 54 weeks = year
     for (i = 0; i < 54; i++) {
     // for (i = 0; i < Object.keys(apiInput).length; i++) {
-        var tempDate = Object.keys(apiInput)[i];
+        var tempDate = Object.keys(apiInput["Weekly Time Series"])[i];
         // console.log("type of Tempdate should be string" + typeoftempDate);
         labels.unshift(tempDate);
-        datasets[0].data.unshift(apiInput[Object.keys(apiInput)[i]]['4. close']);
+        datasets[0].data.unshift(apiInput["Weekly Time Series"][Object.keys(apiInput["Weekly Time Series"])[i]]['4. close']);
     }
     
     var result = [datasets, labels];
@@ -50,7 +50,7 @@ async function getAPI(inputLink) {
         apiData = output["Weekly Time Series"];
 
         // dataParsed = parseLineData(output["Time Series (Daily)"]);
-        dataParsed = parseLineData(output["Weekly Time Series"]);
+        dataParsed = parseLineData(output/* ["Weekly Time Series"] */);
 
         // console.log(Object.keys(output["Monthly Time Series"]))
     
@@ -204,16 +204,19 @@ function insertPortName(){
 insertPortName();
 //remove all content from aside info bar
 function clear(){
-    $('#asideTitle').text('')
-    card.empty()
+    //$('#asideTitle').text('')
+    //card.empty()
+
 }
 // add click event listener to portfolio and stats location
 var ticker;
 card.on('click',function(event){
     event.stopPropagation();
-    clear();
-    $('#asideTitle').text('STATS');
-    ticker=JSON.parse(localStorage.portfolio).positions[0].ticker
+    //$('#asideTitle').text('STATS');
+    var ticker= $(event.target).text()
+    //var ticker= JSON.parse(localStorage.portfolio).positions[0].ticker
+    console.log(ticker)
+    //clear();
     const K = "2JYN2GFONTCPQSJM";
     //var ticker = "MSFT";
     var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
