@@ -59,7 +59,13 @@ function getAPI(inputLink) {
             datasets: dataParsed[0]
         };
         // Move data back into our config
-        config.data = chartData;
+        // config.data = chartData;
+        config.data = config.data || {};
+        config.data.labels = config.data.labels || [];
+        config.data.datasets = config.data.datasets || [];
+
+        config.data.labels.push(chartData.labels);
+        config.data.datasets.push(chartData.datasets);
 
         // Testing variable
         // testChartData = chartData;
