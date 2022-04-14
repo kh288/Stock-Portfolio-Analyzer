@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://unpkg.com/css.gg/icons/all.css' rel='stylesheet'>
     <title>Stock Portfolio Analyzer</title>
 </head>
 <body>
@@ -17,10 +18,37 @@
         </div>
     </nav>
     <main>
+        <dialog id="enter-portfolio-name-dialog">
+            <p class="font-bold text-md text-center mb-1">Enter a new name for your portfolio</p>
+            <form method="dialog">
+                <input id="enter-portfolio-name-dialog-input" name="portfolio-name" required></input>
+                <div class="justify-between flex">
+                    <button id="enter-portfolio-name-dialog-cancel" value="cancel" class=" text-white bg-slate-800 p-1 m-2">Cancel</button>
+                    <button id="enter-portfolio-name-dialog-submit" value="ok" class=" text-white bg-slate-800 p-1 m-2">OK</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="enter-position-dialog">
+            <p>Enter a new position</p>
+            <form method="dialog">
+                <div>
+                    <label for="ticker">Stock Ticker: </label>
+                    <input id="enter-position-dialog-ticker-input" name="ticker" required></input>
+                </div>
+                <div>
+                    <label for="size">Position Size: </label>
+                    <input id="enter-position-dialog-size-input" name="size" type="number" required></input>
+                </div>
+                <div>
+                    <button id="enter-position-dialog-cancel" value="cancel">Cancel</button>
+                    <button id="enter-position-dialog-submit" value="ok">OK</button>
+                </div>
+            </form>
+        </dialog>
         <div class="container max-w-full flex justify-center row mt-5">
-                <p class="border p-1">Portfolio Name: </p>
-                <textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>
-                <button id="inputBtn" class="border bg-slate-800 text-white h-10 p-1">Save portfolio name</button>
+            <h2 id="portfolio-name" class="border p-1"></h2>
+            <!--<textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>-->
+            <button id="inputBtn" class="border bg-slate-800 text-white h-10 p-1"><i class="gg-edit-markup"></i></button>
         </div>
         <section id="portfolio" class="container bg-slate-500 text-white max-w-full mt-5 mb-5">
             <!-- Todo: insert dynamically based on portfolio content -->
@@ -34,14 +62,17 @@
             </div>
         </section>
             <div class="container max-w-full flex justify-center row mt-5">
-                <p class="border">Search stock: </p>
-                <textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>
+                <!--<p class="border">Search stock: </p>-->
+                <!--<textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>-->
                 <button id="button-add-position" type="button" class="border bg-slate-800 text-white font bold p-1">Add Position</button>
             </div>
         </section>
         <div class="container max-w-full justify-center flex pt-5">
             <button id="button-save-portfolio" type="button" class="border bg-slate-800 text-white font bold p-1">Save Portfolio</button>
             <button id="button-delete-portfolio" type="button" class="border bg-slate-800 text-white font bold p-1">Delete Portfolio</button>
+        </div>
+        <div class="container max-w-full justify-center flex pt-5">
+            <p id="totalValue"></p>
         </div>
     </main>
     <footer>
