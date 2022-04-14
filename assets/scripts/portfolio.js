@@ -25,6 +25,7 @@ portfolioListEl.on("click", ".delete-position", function()
     portfolio.positions.splice(deletedPositionIndex, 1);
 
     deletedPosition.remove();
+    portfolioValue(portfolio);
 });
 
 portfolioListEl.on("click", ".edit-position", function()
@@ -120,6 +121,7 @@ function addPositionToList(position)
     deleteButtonEl.appendTo(buttonPanelEl);
 
     positionEl.appendTo(portfolioListEl);
+    portfolioValue(portfolio);
 }
 
 function editPosition(position, newTicker, newSize)
@@ -129,6 +131,19 @@ function editPosition(position, newTicker, newSize)
 }
 
 //button function to save name from textarea box
+var tvDisplay = $('#totalValue')
+//display current name of portfolio and value
+function portfolioValue(portfolio,currentPrice){
+    var value = 0;
+    //if statement to prevent error if portfolio is undefined
+    if (portfolio){
+    for(i=0;i<portfolio.positions.length;i++){
+        num = portfolio.positions[i].size * 10/* change to current price of stock */
+        value += num
+    }
+    tvDisplay.text(portfolio.name + " " +'value: '+ '$' + value)  } 
+}
+
 portNameEditButtonEl.on('click', function()
 {
     portfolioNameDialogEl[0].showModal();
@@ -138,6 +153,8 @@ function refreshPortfolioName()
 {
     portfolioNameEl.text(portfolio.name);
     portfolioNameDialogInputEl.val(portfolio.name);
+    //function below refreshes display of name
+    portfolioValue(portfolio)
 }
 
 function refreshPortfolioPosition(positionIndex)
@@ -162,6 +179,7 @@ function init()
 {
     loadPortfolio();
     refreshPortfolioName();
+    portfolioValue(portfolio);
 }
 
 init();
