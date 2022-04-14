@@ -14,7 +14,9 @@ function parseLineData(apiInput) {
         label: apiInput['Meta Data']['2. Symbol'] + " | Year Data",
         data: [],
         fill: true,
-        borderColor: '#000',
+        borderColor: 'rgb(' + (Math.floor(Math.random() * 180) + 20) + ','+
+                              (Math.floor(Math.random() * 180) + 20) + "," +
+                              (Math.floor(Math.random() * 180) + 20),
         tension: 0.15
     }];
     var labels = [];
