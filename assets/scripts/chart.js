@@ -70,6 +70,7 @@ function getAPI(inputLink) {
 
         lineChart.data = (chartData);
 
+        updatePortfolioStats();
         lineChart.update();
     });
 }
