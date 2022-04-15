@@ -24,6 +24,9 @@ const percentFormatter = new Intl.NumberFormat(navigator.language, {
     maximumFractionDigits: 2
 })
 
+var portfolio;
+const portfolioData = {};
+
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
     var datasets = [{
@@ -227,21 +230,19 @@ function updatePortfolioStats()
 //insertPortName();
 var card = $('#chartPortfolio')
 function insertPortName(){
-    var portName = JSON.parse(localStorage.getItem('portfolio'));
     // test var portName = [{
     //     name: "portfolio",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]},
     //     { name: "wilbert",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]}]
-    for(i=0;i<portName.positions.length;i++){
+    for(i=0;i<portfolio.positions.length;i++){
         var div = $('<div>')
         var pn = $('<a class="hover:underline">');
-        var title = portName.positions[i].ticker;
+        var title = portfolio.positions[i].ticker;
         pn.text(title);
-        pn.attr('data',portName.positions[i].ticker)
+        pn.attr('data',portfolio.positions[i].ticker)
         pn.appendTo(div);
         div.appendTo(card)
     }
 }
-insertPortName();
 //remove all content from aside info bar
 function clear(){
     //$('#asideTitle').text('')
@@ -277,3 +278,64 @@ card.on('click',function(event){
 //     var tvDisplay = $('<div>')
 //     tvDisplay.text(portfolio.name + " " +'value: '+ '$' + value)  } 
 //     tvDisplay.appendTo(card);
+
+function init()
+{
+    loadPortfolio();
+    insertPortName();
+    getPortfolioValues();
+}
+
+function loadPortfolio()
+{
+    portfolio = localStorage.getItem('portfolio');
+    if(portfolio === null)
+    {
+        portfolio = {
+            name: "Mega Stonks",
+            positions : []
+        };
+    }
+    else
+    {
+        portfolio = JSON.parse(portfolio);
+    }
+}
+
+function getPortfolioValues()
+{
+    for(var i = 0; i < portfolio.positions.length; i++)
+    {
+        portfolioData[portfolio.positions[i].ticker] = [];
+        var ticker = portfolio.positions[i].ticker;
+        setTimeout(function()
+        {
+            console.log(ticker);
+            sendApiRequest(ticker);
+        }, i * 150);
+    }
+
+    function sendApiRequest(ticker)
+    {
+        const K = "2JYN2GFONTCPQSJM";
+        $.ajax({
+            url: "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + ticker + "&apikey=" + K,
+            method: "GET"
+        }).then(function (output) {
+            output = output["Weekly Time Series"];
+            var outputKeys = Object.keys(output);
+            outputKeys = outputKeys.slice(0, 54);
+            var portfolioValues = []
+            for (var i = 0; i < outputKeys.length; i++)
+            {
+                var ele = output[outputKeys[i]];
+                ele = ele["4. close"];
+                portfolioValues.push(parseFloat(ele));
+            }
+            portfolioValues.reverse();
+            console.log(portfolioValues);
+        });
+    }
+}
+
+init();
