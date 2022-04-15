@@ -9,8 +9,8 @@
     <title>Stock Portfolio Analyzer</title>
 </head>
 <body>
-    <nav class="container column-12 px-4 flex max-w-full justify-between bg-slate-800 h-20 items-center font-bold text-white text-2xl">
-        <h1 class="relative w-fit pl-2">Stock Portfolio Analyzer</h1>
+    <nav class="container column-12 px-4 lg:flex sm:flex-initial max-w-full lg:justify-between bg-slate-800 h-20 items-center font-bold text-white text-2xl shrink">
+        <h1 class="relative w-fit pl-2 md:flex">Stock Portfolio Analyzer</h1>
         <div class="container flex w-fit pr-2">
             <a id="landPortfolio" class="relative pr-2 hover:underline" href="portfolio.html">Portfolio</a>
             <p class="relative pb-1"> | </p>
@@ -21,7 +21,7 @@
         <dialog id="enter-portfolio-name-dialog">
             <p class="font-bold text-md text-center mb-1">Enter a new name for your portfolio</p>
             <form method="dialog">
-                <input id="enter-portfolio-name-dialog-input" name="portfolio-name" required></input>
+                <input id="enter-portfolio-name-dialog-input" class="border border-black rounded" name="portfolio-name" required></input>
                 <div class="justify-between flex">
                     <button id="enter-portfolio-name-dialog-cancel" value="cancel" class=" text-white bg-slate-800 p-1 m-2">Cancel</button>
                     <button id="enter-portfolio-name-dialog-submit" value="ok" class=" text-white bg-slate-800 p-1 m-2">OK</button>
@@ -33,37 +33,34 @@
             <form method="dialog">
                 <div>
                     <label for="ticker">Stock Ticker: </label>
-                    <input id="enter-position-dialog-ticker-input" name="ticker" required></input>
+                    <input id="enter-position-dialog-ticker-input" class="border border-black rounded" name="ticker" required></input>
                 </div>
                 <div>
                     <label for="size">Position Size: </label>
-                    <input id="enter-position-dialog-size-input" name="size" type="number" required></input>
+                    <input id="enter-position-dialog-size-input" class="border border-black rounded" name="size" type="number" required></input>
                 </div>
                 <div>
-                    <button id="enter-position-dialog-cancel" value="cancel">Cancel</button>
-                    <button id="enter-position-dialog-submit" value="ok">OK</button>
+                    <button id="enter-position-dialog-cancel" value="cancel" class=" text-white bg-slate-800 p-1 m-2">Cancel</button>
+                    <button id="enter-position-dialog-submit" value="ok" class=" text-white bg-slate-800 p-1 m-2">OK</button>
                 </div>
             </form>
         </dialog>
         <div class="container max-w-full flex justify-center row mt-5">
             <h2 id="portfolio-name" class="border p-1"></h2>
-            <!--<textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>-->
             <button id="inputBtn" class="border bg-slate-800 text-white h-10 p-1"><i class="gg-edit-markup"></i></button>
         </div>
         <section id="portfolio" class="container bg-slate-500 text-white max-w-full mt-5 mb-5">
             <!-- Todo: insert dynamically based on portfolio content -->
-            <div id="example" class="flex p-5 grid grid-cols-5 divide-x text-md divide-transparent shrink">
+            <div id="example" class="flex-auto p-5 grid grid-cols-5 text-md border-b-2 border-white text-centershrink">
                 <h3>Symbol</h3>
                 <p>Amount:</p>
                 <p>Current Price:</p>
                 <p>Position Value:</p>
             </div>
-            <div id="portfolio-list">
+            <div id="portfolio-list" class="flex flex-wrap divide-y divide-white">
             </div>
         </section>
             <div class="container max-w-full flex justify-center row mt-5">
-                <!--<p class="border">Search stock: </p>-->
-                <!--<textarea id="nameInput" class="border border-black border-solid h-10 text-xl"></textarea>-->
                 <button id="button-add-position" type="button" class="border bg-slate-800 text-white font bold p-1">Add Position</button>
             </div>
         </section>
