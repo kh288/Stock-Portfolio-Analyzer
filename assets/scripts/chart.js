@@ -1,5 +1,18 @@
-// function to convert data the API into a useable format for the chart
-var counter = 0;
+const portfolioReturnEl = $("#portfolio-return");
+const portfolioAlphaEl = $("#portfolio-alpha");
+const portfolioBetaEl = $("#portfolio-beta");
+const portfolioVolatilityEl = $("#portfolio-volatility");
+const portfolioSharpeRatioEl = $("#portfolio-sharpe-ratio");
+
+const unitlessFormatter = new Intl.NumberFormat(navigator.language, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 3
+})
+const percentFormatter = new Intl.NumberFormat(navigator.language, {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2
+})
 
 // Parse through data we get from the API
 function parseLineData(apiInput) {
@@ -61,6 +74,29 @@ function getAPI(inputLink) {
     });
 }
 
+
+function updatePortfolioStats()
+{
+    // Portfolio return is different since it's calculated locally
+    portfolioReturnEl.text(percentFormatter.format(getPortfolioReturnRate(testPortfolioValues)));
+
+    // Timeouts are to make sure we aren't slamming the Portfolio Optimizer API with too mary requests at once.
+    // It's limited for anomymous users like us.
+    alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+    setTimeout(function()
+    {
+        betaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+    }, 1100);
+    setTimeout(function()
+    {
+        volatilityRequestAjax(testPortfolioValues)
+    }, 2200);
+    setTimeout(function()
+    {
+        sharpeRatioRequestAjax(testPortfolioValues);
+    }, 3300);
+}
+
 // grabs local storage data and displays names in the aside bar 
 var card = $('#chartPortfolio')
 function insertPortName(){
@@ -84,7 +120,6 @@ insertPortName();
 function clear(){
     //$('#asideTitle').text('')
     //card.empty()
-
 }
 
 // add click event listener to portfolio and stats location
