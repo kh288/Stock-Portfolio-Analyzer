@@ -302,24 +302,23 @@ function loadPortfolio()
     }
 }
 
+//var index;
 function getPortfolioValues()
 {
     for(var i = 0; i < portfolio.positions.length; i++)
     {
-        portfolioData[portfolio.positions[i].ticker] = [];
-        var ticker = portfolio.positions[i].ticker;
-        setTimeout(function()
+        //portfolioData[portfolio.positions[i].ticker] = [];
+        setTimeout(function(index)
         {
-            console.log(ticker);
-            sendApiRequest(ticker);
-        }, i * 150);
+            sendQuery(portfolio.positions[index].ticker);
+        }, i * 150, i);
     }
 
-    function sendApiRequest(ticker)
+    function sendQuery(tickerA)
     {
         const K = "2JYN2GFONTCPQSJM";
         $.ajax({
-            url: "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + ticker + "&apikey=" + K,
+            url: "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + tickerA + "&apikey=" + K,
             method: "GET"
         }).then(function (output) {
             output = output["Weekly Time Series"];
@@ -333,8 +332,22 @@ function getPortfolioValues()
                 portfolioValues.push(parseFloat(ele));
             }
             portfolioValues.reverse();
-            console.log(portfolioValues);
+
+            portfolioData[tickerA] = portfolioValues;
+            console.log("Queried " + tickerA + "...");
+            if(isFinishedQuerying())
+            {
+                console.log("Finished!")
+                console.log(portfolioData);
+            }
         });
+    }
+
+    function isFinishedQuerying()
+    {
+        console.log(Object.keys(portfolioData).length);
+        console.log(portfolio.positions.length);
+        return Object.keys(portfolioData).length === portfolio.positions.length;
     }
 }
 
