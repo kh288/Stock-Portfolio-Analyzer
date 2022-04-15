@@ -16,6 +16,7 @@ const percentFormatter = new Intl.NumberFormat(navigator.language, {
 
 var portfolio;
 const portfolioData = {};
+const benchmarkValues = [];
 
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
@@ -38,7 +39,7 @@ function parseLineData(apiInput) {
         var tempDate = Object.keys(apiInput["Weekly Time Series"])[i];
         // console.log("type of Tempdate should be string" + typeoftempDate);
         labels.unshift(tempDate);
-        datasets[0].data.unshift(apiInput["Weekly Time Series"][Object.keys(apiInput["Weekly Time Series"])[i]]['4. close']);
+        datasets[0].data.unshift(parseFloat(apiInput["Weekly Time Series"][Object.keys(apiInput["Weekly Time Series"])[i]]['4. close']));
     }
     // Return both of the generated sets of data
     var result = [datasets, labels];
@@ -57,7 +58,7 @@ const config = {
 const lineChart = new Chart(document.getElementById('line-chart'), config);
 
 // Retrieve data from API
-function getAPI(inputLink) {
+function getAPI(inputLink, ticker) {
     // We need to fetch the data since it takes some time to retreive
     $.ajax({
         url: inputLink,
@@ -73,32 +74,32 @@ function getAPI(inputLink) {
 
         lineChart.data = (chartData);
 
-        updatePortfolioStats();
         lineChart.update();
+        updatePortfolioStats(dataParsed[0][0].data);
     });
 }
 
 
-function updatePortfolioStats()
+function updatePortfolioStats(values)
 {
     // Portfolio return is different since it's calculated locally
-    portfolioReturnEl.text(percentFormatter.format(getPortfolioReturnRate(testPortfolioValues)));
+    portfolioReturnEl.text(percentFormatter.format(getPortfolioReturnRate(values)));
 
     // Timeouts are to make sure we aren't slamming the Portfolio Optimizer API with too mary requests at once.
     // It's limited for anomymous users like us.
-    alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+    //alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(values));
+    /*setTimeout(function()
+    {
+        betaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(values));
+    }, 1100);*/
     setTimeout(function()
     {
-        betaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+        volatilityRequestAjax(values)
     }, 1100);
     setTimeout(function()
     {
-        volatilityRequestAjax(testPortfolioValues)
+        sharpeRatioRequestAjax(values);
     }, 2200);
-    setTimeout(function()
-    {
-        sharpeRatioRequestAjax(testPortfolioValues);
-    }, 3300);
 }
 
 // grabs local storage data and displays names in the aside bar 
@@ -137,14 +138,13 @@ card.on('click',function(event){
     //var ticker = "MSFT";
     var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
     
-    getAPI(apiLinkDay);
+    getAPI(apiLinkDay, ticker);
 })
 
 function init()
 {
     loadPortfolio();
     insertPortName();
-    getPortfolioValues();
 }
 
 function loadPortfolio()
@@ -160,55 +160,6 @@ function loadPortfolio()
     else
     {
         portfolio = JSON.parse(portfolio);
-    }
-}
-
-//var index;
-function getPortfolioValues()
-{
-    for(var i = 0; i < portfolio.positions.length; i++)
-    {
-        //portfolioData[portfolio.positions[i].ticker] = [];
-        setTimeout(function(index)
-        {
-            sendQuery(portfolio.positions[index].ticker);
-        }, i * 150, i);
-    }
-
-    function sendQuery(tickerA)
-    {
-        const K = "2JYN2GFONTCPQSJM";
-        $.ajax({
-            url: "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + tickerA + "&apikey=" + K,
-            method: "GET"
-        }).then(function (output) {
-            output = output["Weekly Time Series"];
-            var outputKeys = Object.keys(output);
-            outputKeys = outputKeys.slice(0, 54);
-            var portfolioValues = []
-            for (var i = 0; i < outputKeys.length; i++)
-            {
-                var ele = output[outputKeys[i]];
-                ele = ele["4. close"];
-                portfolioValues.push(parseFloat(ele));
-            }
-            portfolioValues.reverse();
-
-            portfolioData[tickerA] = portfolioValues;
-            console.log("Queried " + tickerA + "...");
-            if(isFinishedQuerying())
-            {
-                console.log("Finished!")
-                console.log(portfolioData);
-            }
-        });
-    }
-
-    function isFinishedQuerying()
-    {
-        console.log(Object.keys(portfolioData).length);
-        console.log(portfolio.positions.length);
-        return Object.keys(portfolioData).length === portfolio.positions.length;
     }
 }
 
