@@ -25,7 +25,7 @@ portfolioListEl.on("click", ".delete-position", function()
     portfolio.positions.splice(deletedPositionIndex, 1);
 
     deletedPosition.remove();
-    portfolioValue(portfolio);
+    //portfolioValue(portfolio);
 });
 
 portfolioListEl.on("click", ".edit-position", function()
@@ -115,7 +115,7 @@ function addPositionToList(position)
     deleteButtonEl.appendTo(buttonPanelEl);
 
     positionEl.appendTo(portfolioListEl);
-    portfolioValue(portfolio);
+    //portfolioValue(portfolio);
 }
 
 function editPosition(position, newTicker, newSize)
@@ -134,7 +134,7 @@ function refreshPortfolioName()
     portfolioNameEl.text(portfolio.name);
     portfolioNameDialogInputEl.val(portfolio.name);
     //function below refreshes display of name
-    portfolioValue(portfolio)
+    //portfolioValue(portfolio)
 }
 
 function refreshPortfolioPosition(positionIndex)
@@ -159,7 +159,7 @@ function init()
 {
     loadPortfolio();
     refreshPortfolioName();
-    portfolioValue(portfolio);
+    //portfolioValue(portfolio);
 }
 
 init();

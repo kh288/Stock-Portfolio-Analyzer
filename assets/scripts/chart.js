@@ -14,7 +14,11 @@ const percentFormatter = new Intl.NumberFormat(navigator.language, {
     maximumFractionDigits: 2
 })
 
-// Parse through data we get from the API
+var portfolio;
+const portfolioData = {};
+const benchmarkValues = [];
+
+// function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
     // This data set is the framework for the chart information
     var datasets = [{
@@ -35,7 +39,7 @@ function parseLineData(apiInput) {
         var tempDate = Object.keys(apiInput["Weekly Time Series"])[i];
         // console.log("type of Tempdate should be string" + typeoftempDate);
         labels.unshift(tempDate);
-        datasets[0].data.unshift(apiInput["Weekly Time Series"][Object.keys(apiInput["Weekly Time Series"])[i]]['4. close']);
+        datasets[0].data.unshift(parseFloat(apiInput["Weekly Time Series"][Object.keys(apiInput["Weekly Time Series"])[i]]['4. close']));
     }
     // Return both of the generated sets of data
     var result = [datasets, labels];
@@ -54,7 +58,7 @@ const config = {
 const lineChart = new Chart(document.getElementById('line-chart'), config);
 
 // Retrieve data from API
-function getAPI(inputLink) {
+function getAPI(inputLink, ticker) {
     // We need to fetch the data since it takes some time to retreive
     $.ajax({
         url: inputLink,
@@ -70,53 +74,51 @@ function getAPI(inputLink) {
 
         lineChart.data = (chartData);
 
-        updatePortfolioStats();
         lineChart.update();
+        updatePortfolioStats(dataParsed[0][0].data);
     });
 }
 
 
-function updatePortfolioStats()
+function updatePortfolioStats(values)
 {
     // Portfolio return is different since it's calculated locally
-    portfolioReturnEl.text(percentFormatter.format(getPortfolioReturnRate(testPortfolioValues)));
+    portfolioReturnEl.text(percentFormatter.format(getPortfolioReturnRate(values)));
 
     // Timeouts are to make sure we aren't slamming the Portfolio Optimizer API with too mary requests at once.
     // It's limited for anomymous users like us.
-    alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+    //alphaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(values));
+    /*setTimeout(function()
+    {
+        betaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(values));
+    }, 1100);*/
     setTimeout(function()
     {
-        betaRequestAjax(getPortfolioReturnRates(testBenchmarkValues), getPortfolioReturnRates(testPortfolioValues));
+        volatilityRequestAjax(values)
     }, 1100);
     setTimeout(function()
     {
-        volatilityRequestAjax(testPortfolioValues)
+        sharpeRatioRequestAjax(values);
     }, 2200);
-    setTimeout(function()
-    {
-        sharpeRatioRequestAjax(testPortfolioValues);
-    }, 3300);
 }
 
 // grabs local storage data and displays names in the aside bar 
 var card = $('#chartPortfolio')
 function insertPortName(){
-    var portName = JSON.parse(localStorage.getItem('portfolio'));
     // test var portName = [{
     //     name: "portfolio",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]},
     //     { name: "wilbert",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]}]
-    for(i=0;i<portName.positions.length;i++){
+    for(i=0;i<portfolio.positions.length;i++){
         var div = $('<div>')
         var pn = $('<a class="hover:underline">');
-        var title = portName.positions[i].ticker;
+        var title = portfolio.positions[i].ticker;
         pn.text(title);
-        pn.attr('data',portName.positions[i].ticker)
+        pn.attr('data',portfolio.positions[i].ticker)
         pn.appendTo(div);
         div.appendTo(card)
     }
 }
 
-insertPortName();
 //remove all content from aside info bar
 function clear(){
     //$('#asideTitle').text('')
@@ -136,5 +138,29 @@ card.on('click',function(event){
     //var ticker = "MSFT";
     var apiLinkDay = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&outputsize=compact&symbol="+ticker+"&apikey="+K;
     
-    getAPI(apiLinkDay);
+    getAPI(apiLinkDay, ticker);
 })
+
+function init()
+{
+    loadPortfolio();
+    insertPortName();
+}
+
+function loadPortfolio()
+{
+    portfolio = localStorage.getItem('portfolio');
+    if(portfolio === null)
+    {
+        portfolio = {
+            name: "Mega Stonks",
+            positions : []
+        };
+    }
+    else
+    {
+        portfolio = JSON.parse(portfolio);
+    }
+}
+
+init();
