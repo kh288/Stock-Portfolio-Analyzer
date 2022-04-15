@@ -96,16 +96,12 @@ function getNewPosition(ticker, size)
 
 function addPositionToList(position)
 {
-    const positionEl = $("<div class='flex flex-wrap p-3 gap-2 grid grid-cols-5 divide-x text-md divide-transparent shrink stock-position'>");
+    const positionEl = $("<div class='flex-auto p-3 gap-2 grid grid-cols-4 divide-x text-md divide-transparent shrink justify-items-center stock-position'>");
 
     const tickerEl = $("<h3 class='ticker'>");
     tickerEl.text(position.ticker);
     const amountEl = $("<p class='size'>");
     amountEl.text("Amount: " + position.size);
-    const priceEl = $("<p>");
-    priceEl.text("Current Price: $165.75 (-4.34 -2.55%)");
-    const positionPriceEl = $("<p class='sm:break-words'>");
-    positionPriceEl.text("Position Value: $8,375.00 (-$217.00)");
     const buttonPanelEl = $("<div>");
     const editButtonEl = $("<button class='edit-position rounded bg-slate-800' type='button'>");
     editButtonEl.text("Edit Position");
@@ -114,8 +110,6 @@ function addPositionToList(position)
     
     tickerEl.appendTo(positionEl);
     amountEl.appendTo(positionEl);
-    priceEl.appendTo(positionEl);
-    positionPriceEl.appendTo(positionEl);
     buttonPanelEl.appendTo(positionEl);
     editButtonEl.appendTo(buttonPanelEl);
     deleteButtonEl.appendTo(buttonPanelEl);
