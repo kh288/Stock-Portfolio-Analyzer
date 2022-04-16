@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Hello! this is our portfolio analyzer. In this app you get to build a portfolio, with our potfolio page, this lets you pick as many positions as you want. With this you can then save into local storage and go over to the chart tab to see additional stats and visualize the progress that stock has gained over a years time.
+Hello! this is our portfolio analyzer. In this app you get to build a stock portfolio with our potfolio page, this lets you pick as many positions as you want. With this you can then save it into into local storage and navigate to the chart tab to see additional stats and visualize the progress that stock has gained (or lost) over a year's time.
 
 ![Image of introduction](assets/images/01-get-started.gif)
 
@@ -15,7 +15,7 @@ Hello! this is our portfolio analyzer. In this app you get to build a portfolio,
 * [License](#license)
 
 ## Description
-We're using a couple cool technologies here to make this possible. This consists of us taking data from Alpha Advantage API to visualize and get the main ticker data. From there we can take that data and plug it intot he portfolio analyzer data to get some of the cool stats like: Position Return, Volitility, and Sharpe Ratio.
+We're using a couple of cool technologies here to make this possible. This consists of us taking data from Alpha Advantage API to visualize and get the main ticker data. From there we can take that data and plug it into the Portfolio Optimizer API data to get some cool stats: Position Return, Volitility, and Sharpe Ratio.
 
 ![Portfolio building](assets/images/02-add-position.gif)
 
@@ -50,4 +50,4 @@ We're using a couple cool technologies here to make this possible. This consists
 * [John Netzel](https://github.com/CommieDog)
 
 ## License
-&copy; 2022 Richard Ferry, Kevin Hernandez, and John Netzel. All Rights Reserved.
+&copy; 2022 Richard Ferry, Kevin Hernandez, and John Netzel. All Rights Reserved. Licensed under the MIT License.
