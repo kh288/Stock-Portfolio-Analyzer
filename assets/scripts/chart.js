@@ -20,12 +20,12 @@ const portfolioData = {};
 const benchmarkValues = [];
 
 var dataParsed;
-const lineChart = new Chart(document.getElementById('line-chart'), config);
 // Declate our config for the chart
 const config = {
     type: 'line',
     data: []
 };
+const lineChart = new Chart(document.getElementById('line-chart'), config);
 
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
