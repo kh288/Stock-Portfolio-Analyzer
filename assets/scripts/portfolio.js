@@ -18,6 +18,7 @@ const defaultPortfolio = {
 
 var portfolio;
 
+// Delete stock position from portfolio
 portfolioListEl.on("click", ".delete-position", function()
 {
     var deletedPosition = $(this).parents(".stock-position");
@@ -28,6 +29,7 @@ portfolioListEl.on("click", ".delete-position", function()
     //portfolioValue(portfolio);
 });
 
+// Edit stock position in portfolio via dialog box
 portfolioListEl.on("click", ".edit-position", function()
 {
     var positionToEdit = portfolio.positions[$(this).parents(".stock-position").index()]; // Gets the position corresponding the the position whose edit button was pressed
@@ -40,23 +42,27 @@ portfolioListEl.on("click", ".edit-position", function()
     portfolioPositionDialogEl[0].showModal();
 });
 
+// Add stock position to portfolio via dialog box
 addPositionEl.on("click", function()
 {
     $("#enter-position-dialog-submit").val("ok");
     portfolioPositionDialogEl[0].showModal();
 });
 
+// Save stock portfolio to local storage
 saveButtonEl.on("click", function()
 {
     localStorage.setItem("portfolio", JSON.stringify(portfolio));
     console.log(portfolio);
 });
 
+// Delete portfolio from local storage
 deleteButtonEl.on("click", function()
 {
     localStorage.removeItem("portfolio");
 });
 
+// Process portfolio name dialog box input
 portfolioNameDialogEl.on("close", function()
 {
     if(portfolioNameDialogEl[0].returnValue === "ok")
@@ -66,6 +72,7 @@ portfolioNameDialogEl.on("close", function()
     refreshPortfolioName();
 });
 
+// Process portfolio stock position dialog box input
 portfolioPositionDialogEl.on("close", function()
 {
     if(portfolioPositionDialogEl[0].returnValue === "ok") // Dialog returns from add position
@@ -86,6 +93,7 @@ portfolioPositionDialogEl.on("close", function()
     portfolioPositionDialogSizeInputEl.val("");
 });
 
+// Create and return new stock position
 function getNewPosition(ticker, size)
 {
     return {
@@ -94,6 +102,7 @@ function getNewPosition(ticker, size)
     };
 }
 
+// Add stock position to portfolio display
 function addPositionToList(position)
 {
     const positionEl = $("<div class='flex-auto p-3 gap-2 grid grid-cols-4 divide-x text-md divide-transparent shrink justify-items-center stock-position'>");
@@ -118,17 +127,20 @@ function addPositionToList(position)
     //portfolioValue(portfolio);
 }
 
+// Set specified stock position ticker and size values to new values
 function editPosition(position, newTicker, newSize)
 {
     position.ticker = newTicker;
     position.size = newSize;
 }
 
+// Edit portfolio name via dialog box
 portNameEditButtonEl.on('click', function()
 {
     portfolioNameDialogEl[0].showModal();
 });
 
+// Refresh portfolio name data on display
 function refreshPortfolioName()
 {
     portfolioNameEl.text(portfolio.name);
@@ -137,6 +149,7 @@ function refreshPortfolioName()
     //portfolioValue(portfolio)
 }
 
+// Refresh the given stock position data on display
 function refreshPortfolioPosition(positionIndex)
 {
     var portfolioPosition = portfolio.positions[positionIndex];
@@ -146,6 +159,7 @@ function refreshPortfolioPosition(positionIndex)
     portfolioPositionEl.find(".size").text("Amount: " + portfolioPosition.size);
 }
 
+// Loads portfolio data from local storage
 function loadPortfolio()
 {
     portfolio = JSON.parse(localStorage.getItem("portfolio")) || defaultPortfolio;
@@ -155,11 +169,11 @@ function loadPortfolio()
     }
 }
 
+// Initialize position page
 function init()
 {
     loadPortfolio();
     refreshPortfolioName();
-    //portfolioValue(portfolio);
 }
 
 init();

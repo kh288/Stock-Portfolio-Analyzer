@@ -1,3 +1,4 @@
+const portfolioBarEl = $('#chartPortfolio');
 const portfolioReturnEl = $("#portfolio-return");
 const portfolioAlphaEl = $("#portfolio-alpha");
 const portfolioBetaEl = $("#portfolio-beta");
@@ -17,6 +18,14 @@ const percentFormatter = new Intl.NumberFormat(navigator.language, {
 var portfolio;
 const portfolioData = {};
 const benchmarkValues = [];
+
+var dataParsed;
+// Declate our config for the chart
+const config = {
+    type: 'line',
+    data: []
+};
+const lineChart = new Chart(document.getElementById('line-chart'), config);
 
 // function to convert data the API into a useable format for the chart
 function parseLineData(apiInput) {
@@ -46,19 +55,9 @@ function parseLineData(apiInput) {
     return result;
 }
 
-var dataParsed;
-
-// Declate our config for the chart
-const config = {
-    type: 'line',
-    data: []
-};
-
-// Declare new chart
-const lineChart = new Chart(document.getElementById('line-chart'), config);
 
 // Retrieve data from API
-function getAPI(inputLink, ticker) {
+function getAPI(inputLink) {
     // We need to fetch the data since it takes some time to retreive
     $.ajax({
         url: inputLink,
@@ -79,7 +78,7 @@ function getAPI(inputLink, ticker) {
     });
 }
 
-
+// Update the protfolio stats elements with calculated values
 function updatePortfolioStats(values)
 {
     // Portfolio return is different since it's calculated locally
@@ -95,19 +94,15 @@ function updatePortfolioStats(values)
     setTimeout(function()
     {
         volatilityRequestAjax(values)
-    }, 1100);
+    }, 100);
     setTimeout(function()
     {
         sharpeRatioRequestAjax(values);
-    }, 2200);
+    }, 1200);
 }
 
 // grabs local storage data and displays names in the aside bar 
-var card = $('#chartPortfolio')
 function insertPortName(){
-    // test var portName = [{
-    //     name: "portfolio",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]},
-    //     { name: "wilbert",positions:[{ticker: "AAPL", size: 100},{ticker: "TSLA",size: 15}]}]
     for(i=0;i<portfolio.positions.length;i++){
         var div = $('<div>')
         var pn = $('<a class="hover:underline">');
@@ -115,7 +110,7 @@ function insertPortName(){
         pn.text(title);
         pn.attr('data',portfolio.positions[i].ticker)
         pn.appendTo(div);
-        div.appendTo(card)
+        div.appendTo(portfolioBarEl)
     }
 }
 
@@ -126,8 +121,7 @@ function clear(){
 }
 
 // add click event listener to portfolio and stats location
-var ticker;
-card.on('click',function(event){
+portfolioBarEl.on('click',function(event){
     event.stopPropagation();
     //$('#asideTitle').text('STATS');
     var ticker= $(event.target).text()
@@ -141,12 +135,14 @@ card.on('click',function(event){
     getAPI(apiLinkDay, ticker);
 })
 
+// Initialize the chart page
 function init()
 {
     loadPortfolio();
     insertPortName();
 }
 
+// Load the portfolio object from storage if possible or fallback to default portfolio
 function loadPortfolio()
 {
     portfolio = localStorage.getItem('portfolio');

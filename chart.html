@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href='./assets/css/tailwind.css' rel='stylesheet'>
     <title>Stock Portfolio Analyzer</title>
 </head>
 <body>
@@ -28,7 +28,7 @@
         <div>
             <canvas id="line-chart" class=" w-full max-w-full" width="600" height="400"></canvas>
             <div id="stats" class=" mt-10 border mx-auto shrink">
-                <h3>Position Stats</h3>
+                <h3 class="text-xl font-bold">Position Stats</h3>
                 <p>Position Return: <span id="portfolio-return"></span></p>
                 <!--<p>Alpha: <span id="portfolio-alpha"></span></p>
                 <p>Beta: <span id="portfolio-beta"></span></p>-->

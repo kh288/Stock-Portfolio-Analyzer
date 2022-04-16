@@ -52,6 +52,7 @@ function getPortfolioAverageReturn(portfolioReturns)
     return portfolioAverageReturn;
 }
 
+// Create and return a request for alpha data to the Portfolio Optimizer API
 function createAlphaRequestData(benchmarkReturnRates, portfolioReturnRates)
 {
     return JSON.stringify({
@@ -65,6 +66,7 @@ function createAlphaRequestData(benchmarkReturnRates, portfolioReturnRates)
     });
 }
 
+// Create and return a request for beta data to the Portfolio Optimizer API
 function createBetaRequestData(benchmarkReturnRates, portfolioReturnRates)
 {
     return JSON.stringify({
@@ -78,6 +80,7 @@ function createBetaRequestData(benchmarkReturnRates, portfolioReturnRates)
     });
 }
 
+// Create and return a request for volatility data to the Portfolio Optimizer API
 function createVolatilityRequestData(portfolioValues)
 {
     return JSON.stringify({
@@ -89,21 +92,11 @@ function createVolatilityRequestData(portfolioValues)
     });
 }
 
-function createVolatilityRequestData(portfolioValues)
-{
-    return JSON.stringify({
-        portfolios: [
-            {
-                portfolioValues: portfolioValues
-            }
-        ]
-    });
-}
-
+// Create and return a request for sharpe ratio data to the Portfolio Optimizer API
 function createSharpeRatioRequestData(portfolioValues)
 {
     return JSON.stringify({
-        riskFreeRate: 0.01,
+        riskFreeRate: 0.01 / 52, // 1% annualized
         portfolios: [
             {
                 portfolioValues: portfolioValues
@@ -112,6 +105,7 @@ function createSharpeRatioRequestData(portfolioValues)
     });
 }
 
+// Send API request, wait for response, and update alpha value display
 function alphaRequestAjax(benchmarkReturns, portfolioReturns)
 {
     $.ajax({
@@ -124,6 +118,7 @@ function alphaRequestAjax(benchmarkReturns, portfolioReturns)
     });
 }
 
+// Send API request, wait for response, and update beta value display
 function betaRequestAjax(benchmarkReturns, portfolioReturns)
 {
     $.ajax({
@@ -136,6 +131,7 @@ function betaRequestAjax(benchmarkReturns, portfolioReturns)
     });
 }
 
+// Send API request, wait for response, and update volatility value display
 function volatilityRequestAjax(portfolioValues)
 {
     $.ajax({
@@ -148,6 +144,7 @@ function volatilityRequestAjax(portfolioValues)
     });
 }
 
+// Send API request, wait for response, and update sharpe ratio value display
 function sharpeRatioRequestAjax(portfolioValues)
 {
     $.ajax({
