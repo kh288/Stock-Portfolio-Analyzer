@@ -96,7 +96,7 @@ function createVolatilityRequestData(portfolioValues)
 function createSharpeRatioRequestData(portfolioValues)
 {
     return JSON.stringify({
-        riskFreeRate: 0.01,
+        riskFreeRate: 0.01 / 52, // 1% annualized
         portfolios: [
             {
                 portfolioValues: portfolioValues
