@@ -50,4 +50,4 @@ We're using a couple of cool technologies here to make this possible. This consi
 * [John Netzel](https://github.com/CommieDog)
 
 ## License
-&copy; 2022 Richard Ferry, Kevin Hernandez, and John Netzel. All Rights Reserved. Licensed under the MIT License.
+&copy; 2022 Richard Ferry, Kevin Hernandez, and John Netzel. All Rights Reserved. Licensed under the [MIT License](/LICENSE).
